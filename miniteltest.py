@@ -83,7 +83,7 @@ class testMinitel(unittest.TestCase):
         self.assertEquals(self.fser.written, acc)
 
     def testTextmodeANSI(self):
-        'Test text modes for videotex'
+        'Test text modes for ANSI'
         acc = ''
         self.minia.setTextMode(minitel.NORMAL)
         self.assertEquals(self.fser.written,acc)
@@ -93,7 +93,25 @@ class testMinitel(unittest.TestCase):
         self.minia.setTextMode(minitel.NORMAL)
         self.assertEquals(self.fser.written, '\x1b[5m\x1b[0m')
 
-        
+    def testSetColorsVideotex(self):
+        'Test set colors for videotex'
+        self.miniv.setColors(5,2)
+        self.miniv.setColors(5,3)
+        self.miniv.setColors(6)
+        self.miniv.setColors(bg=6)
+        self.miniv.setColors(7,0)
+        def c(x): return '\x1b'+chr(x)
+        self.assertEquals(self.fser.written, c(0x45)+c(0x52)+c(0x53)+c(0x46)+c(0x56)+c(0x47)+c(0x50))
+
+    def testSetColorsANSI(self):
+        'Test set colors for ANSI'
+        self.minia.setColors(5,2)
+        self.minia.setColors(5,3)
+        self.minia.setColors(6)
+        self.minia.setColors(bg=6)
+        self.minia.setColors(7,0)
+        def c(x): return '\x1b['+str(x)+'m'
+        self.assertEquals(self.fser.written, c(35)+c(42)+c(43)+c(36)+c(46)+c(37)+c(40))
         
 if __name__ == '__main__':
     unittest.main()

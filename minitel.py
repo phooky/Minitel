@@ -19,7 +19,7 @@ ESC='\x1b'
 CSI = ESC+'['
 def SGR(param):
     'Select graphic rendition'
-    return CSI + param + 'm'
+    return CSI + str(param) + 'm'
 
 class Minitel:
     def __init__(self,port=None,baud=4800,mode=MODE_VIDEOTEX):
@@ -29,6 +29,8 @@ class Minitel:
         self.setMode(mode)
         self.baud = baud
         self.textMode = NORMAL
+        self.fg = 7
+        self.bg = 0
         if isinstance(port, basestring):
             self.portName = port
             self.ser = serial.Serial(port, baud, 
@@ -78,6 +80,25 @@ class Minitel:
             if textMode & BLINK: self.send(SGR('5'))
             elif textMode == NORMAL: self.send(SGR('0'))
         self.textMode = textMode
+
+    def setColors(self,fg=-1,bg=-1):
+        if fg < -1 or fg > 7:
+            raise ValueError('Foreground out of range: {0}'.format(fg))
+        if bg < -1 or bg > 7:
+            raise ValueError('Background out of range: {0}'.format(bg))
+        if fg != -1 and fg != self.fg:
+            if self.isVT():
+                self.send(ESC+chr(0x40 + fg))
+            else:
+                self.send(SGR(str(30 + fg)))
+            self.fg = fg
+        if bg != -1 and bg != self.bg:
+            if self.isVT():
+                self.send(ESC+chr(0x50 + bg))
+            else:
+                self.send(SGR(str(40 + bg)))
+            self.bg = bg
+
             
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
