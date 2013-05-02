@@ -15,7 +15,7 @@ class Converter:
         # first, convert image to grayscale
         im = self.img.convert("L")
         # resize
-        im = im.resize((40*2,24*3))
+        im = im.resize((40*2,24*3),Image.ANTIALIAS)
         # normalize contrast
         im = ImageOps.autocontrast(im)
         # down to 3-bit
@@ -55,11 +55,10 @@ class Converter:
             """generate display codes for 2x3 block"""
             dark,light = findDarkLight(image,x,y)
             v = 0
-            for i in range(2):
-                for j in range(3):
-                    v = (v >> 1)
-                    if im.getpixel((x+i,y+j)) == light:
-                         v = v | (1 << 5)
+            for i, j in [(0,0),(1,0),(0,1),(1,1),(0,2),(1,2)]:
+                v = (v >> 1)
+                if im.getpixel((x+i,y+j)) == light:
+                    v = v | (1 << 5)
             c = ''
             if light != self.lastlight:
                 c = c + '\x1b' + chr(0x40+convcolor(light))
