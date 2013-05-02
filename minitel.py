@@ -195,11 +195,8 @@ if __name__ == '__main__':
                     m.ser.write('\r')
     elif args.chartest:
         for i in range(32,128):
-            m.ser.write('{1}  '.format(hex(i),chr(i)))
-            if i%8 == 7:
-                m.ser.write('\n')
-                if args.crlf:
-                    m.ser.write('\r')
+            m.moveCursor(1+ ((i%8)*4) , 1+ ((i-32)/8))
+            m.ser.write(chr(i))
     else:
         for line in sys.stdin:
             m.ser.write(line)
