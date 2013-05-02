@@ -112,6 +112,16 @@ class testMinitel(unittest.TestCase):
         self.minia.setColors(7,0)
         def c(x): return '\x1b['+str(x)+'m'
         self.assertEquals(self.fser.written, c(35)+c(42)+c(43)+c(36)+c(46)+c(37)+c(40))
+
+    def testSetVTMode(self):
+        'Test setting videotex graphics/text mode'
+        self.miniv.setVTMode(minitel.VT_TEXT)
+        self.miniv.setVTMode(minitel.VT_GRAPHICS)
+        self.miniv.setVTMode(minitel.VT_GRAPHICS)
+        self.miniv.setVTMode(minitel.VT_TEXT)
+        self.assertEquals(self.fser.written, '\x0e\x0f')
+        self.assertRaises(ValueError, Minitel.setVTMode, self.miniv, 10)
+        self.assertRaises(ValueError, Minitel.setVTMode, self.minia, minitel.VT_GRAPHICS)
         
 if __name__ == '__main__':
     unittest.main()

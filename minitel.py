@@ -14,6 +14,10 @@ TALL = 1
 WIDE = 2
 BLINK = 4
 
+# Videotex submodes
+VT_TEXT = 0
+VT_GRAPHICS = 1
+
 ESC='\x1b'
 # Control sequence introducer
 CSI = ESC+'['
@@ -29,6 +33,7 @@ class Minitel:
         self.setMode(mode)
         self.baud = baud
         self.textMode = NORMAL
+        self.vtMode = VT_TEXT
         self.fg = 7
         self.bg = 0
         if isinstance(port, basestring):
@@ -39,6 +44,20 @@ class Minitel:
                                      timeout = 0.1)
         else: # presume it's a previously opened port
             self.ser = port
+
+    def setVTMode(self,vtMode):
+        'Set graphics or character mode in videotex display mode'
+        if not self.isVT():
+            raise ValueError("Can't switch VT modes in ANSI mode")
+        if self.vtMode == vtMode:
+            return
+        if vtMode == VT_TEXT:
+            self.send('\x0f')
+        elif vtMode == VT_GRAPHICS:
+            self.send('\x0e')
+        else:
+            raise ValueError('Unrecognized VT mode')
+        self.vtMode = vtMode
 
     def setMode(self,mode):
         'Set videotex or ANSI mode.'
@@ -138,10 +157,9 @@ if __name__ == '__main__':
     elif args.vidtexcolor:
         for i in range(8):
             for j in range(8):
-                m.ser.write('\x1b{0}\x1b{1} {2}{3} '.format(chr(0x40+i),chr(0x50+j),i,j))
-            m.ser.write('\n')
-            if args.crlf:
-                m.ser.write('\r')
+                m.setColors(i,j)
+                m.send(' {0}{1} '.format(i,j))
+            m.newline()
     elif args.vidtexglyph:
         m.ser.write('\x0e')
         for i in range(32,128):
