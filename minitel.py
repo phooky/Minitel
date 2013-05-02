@@ -8,10 +8,18 @@ import sys
 MODE_VIDEOTEX = 0
 MODE_ANSI = 1
 
-# Text modes. Only valid in Videotex mode.
-VT_NORMAL = 0
-VT_TALL = 1
-VT_WIDE = 2
+# Text modes. Tall and wide only valid in Videotex mode.
+NORMAL = 0
+TALL = 1
+WIDE = 2
+BLINK = 4
+
+ESC='\x1b'
+# Control sequence introducer
+CSI = ESC+'['
+def SGR(param):
+    'Select graphic rendition'
+    return CSI + param + 'm'
 
 class Minitel:
     def __init__(self,port=None,baud=4800,mode=MODE_VIDEOTEX):
@@ -20,6 +28,7 @@ class Minitel:
         or a previously constructed serial object.'''
         self.setMode(mode)
         self.baud = baud
+        self.textMode = NORMAL
         if isinstance(port, basestring):
             self.portName = port
             self.ser = serial.Serial(port, baud, 
@@ -55,7 +64,20 @@ class Minitel:
     def recv(self,byteCount):
         'Shorthand for retrieving a number of bytes from the minitel.'
         return self.ser.read(byteCount)
-        
+    
+    def setTextMode(self,textMode):
+        if self.textMode == textMode:
+            return
+        if self.isVT():
+            if textMode == NORMAL: self.send(ESC+'\x4c')
+            if textMode & TALL: self.send(ESC+'\x4d')
+            if textMode & WIDE: self.send(ESC+'\x4e')
+            if textMode & BLINK: self.send(ESC+'\x48')
+        else:
+            if textMode & TALL or textMode & WIDE: raise ValueError('Illegal ANSI mode')
+            if textMode & BLINK: self.send(SGR('5'))
+            elif self.textMode == NORMAL: self.send(SGR('0'))
+            
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
     parser.add_argument('--baud', type=int, default=4800)
