@@ -39,6 +39,10 @@ class testMinitel(unittest.TestCase):
         'Test clear screen for ANSI'
         self.minia.clearScreen()
         self.assertEquals(self.fser.written,'\x1b[2J')
+
+    def testNewline(self):
+        self.minia.newline()
+        self.assertIn(self.fser.written,['\n\r','\r\n'])
         
 if __name__ == '__main__':
     unittest.main()

@@ -8,6 +8,11 @@ import sys
 MODE_VIDEOTEX = 0
 MODE_ANSI = 1
 
+# Text modes. Only valid in Videotex mode.
+VT_NORMAL = 0
+VT_TALL = 1
+VT_WIDE = 2
+
 class Minitel:
     def __init__(self,port=None,baud=4800,mode=MODE_VIDEOTEX):
         '''Construct a minitel interface on a given port.
@@ -37,7 +42,11 @@ class Minitel:
         'Clear the terminal.'
         if self.isVT(): self.ser.write('\x0c')
         else: self.ser.write('\x1b[2J')
-        
+    
+    def newline(self):
+        'Send a newline/carriage return combo.'
+        self.ser.write('\n\r')
+
     
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
