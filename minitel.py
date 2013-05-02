@@ -24,7 +24,8 @@ class Minitel:
             self.portName = port
             self.ser = serial.Serial(port, baud, 
                                      parity = serial.PARITY_EVEN,
-                                     bytesize = serial.SEVENBITS)
+                                     bytesize = serial.SEVENBITS,
+                                     timeout = 0.1)
         else: # presume it's a previously opened port
             self.ser = port
 
@@ -40,14 +41,21 @@ class Minitel:
 
     def clearScreen(self):
         'Clear the terminal.'
-        if self.isVT(): self.ser.write('\x0c')
-        else: self.ser.write('\x1b[2J')
+        if self.isVT(): self.send('\x0c')
+        else: self.send('\x1b[2J')
     
     def newline(self):
         'Send a newline/carriage return combo.'
-        self.ser.write('\n\r')
+        self.send('\n\r')
 
-    
+    def send(self,data):
+        'Shorthand for sending bytes to the minitel.'
+        self.ser.write(data)
+
+    def recv(self,byteCount):
+        'Shorthand for retrieving a number of bytes from the minitel.'
+        return self.ser.read(byteCount)
+        
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
     parser.add_argument('--baud', type=int, default=4800)
