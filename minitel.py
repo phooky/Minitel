@@ -13,6 +13,10 @@ NORMAL = 0
 TALL = 1
 WIDE = 2
 BLINK = 4
+BOLD = 8
+INVERTED = 16
+STRIKETHROUGH = 32
+UNDERLINE = 64
 
 # Videotex submodes
 VT_TEXT = 0
@@ -90,15 +94,30 @@ class Minitel:
         if self.textMode == textMode:
             return
         if self.isVT():
+            if textMode & STRIKETHROUGH or textMode & UNDERLINE: 
+                raise ValueError('Illegal ANSI text mode')
             if textMode == NORMAL: self.send(ESC+'\x4c')
             if textMode & TALL: self.send(ESC+'\x4d')
             if textMode & WIDE: self.send(ESC+'\x4e')
             if textMode & BLINK: self.send(ESC+'\x48')
+            if textMode & BOLD: self.setColors(7,0)
+            if textMode & INVERTED: self.setColors(0,7)
         else:
-            if textMode & TALL or textMode & WIDE: raise ValueError('Illegal ANSI mode')
-            if textMode & BLINK: self.send(SGR('5'))
-            elif textMode == NORMAL: self.send(SGR('0'))
+            if textMode & TALL or textMode & WIDE: 
+                raise ValueError('Illegal ANSI text mode')
+            if textMode & BLINK: self.send(SGR(5))
+            if textMode & BOLD: self.send(SGR(1))
+            if textMode & INVERTED: self.send(SGR(7))
+            if textMode & STRIKETHROUGH: self.send(SGR(9))
+            if textMode & UNDERLINE: self.send(SGR(4))
+            elif textMode == NORMAL: self.send(SGR(0))
         self.textMode = textMode
+
+    def moveCursor(self,x,y):
+        if self.isVT():
+            self.send('\x1f'+chr(65+y)+chr(65+x))
+        else:
+            self.send(CSI+str(y)+';'+str(x)+'H')
 
     def setColors(self,fg=-1,bg=-1):
         if fg < -1 or fg > 7:
@@ -118,6 +137,7 @@ class Minitel:
                 self.send(SGR(str(40 + bg)))
             self.bg = bg
 
+    
             
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')

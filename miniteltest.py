@@ -122,6 +122,20 @@ class testMinitel(unittest.TestCase):
         self.assertEquals(self.fser.written, '\x0e\x0f')
         self.assertRaises(ValueError, Minitel.setVTMode, self.miniv, 10)
         self.assertRaises(ValueError, Minitel.setVTMode, self.minia, minitel.VT_GRAPHICS)
+
+    def testMoveCursorVideotex(self):
+        'Test cursor movement in videotex mode'
+        self.miniv.moveCursor(10,12)
+        self.miniv.moveCursor(20,15)
+        def c(x,y): return '\x1f'+chr(65+y)+chr(65+x)
+        self.assertEquals(self.fser.written, c(10,12)+c(20,15))
+
+    def testMoveCursorANSI(self):
+        'Test cursor movement in ANSI mode'
+        self.minia.moveCursor(10,12)
+        self.minia.moveCursor(20,15)
+        def c(x): return '\x1b['+str(x)+'H'
+        self.assertEquals(self.fser.written, c('12;10')+c('15;20'))
         
 if __name__ == '__main__':
     unittest.main()
