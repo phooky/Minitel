@@ -49,9 +49,9 @@ class Converter:
         def convcolor(value):
             # take the high three bits, and move the lsb to msb
             return (value >> 6) | ((value >> 3) & (1<<2))
-            
+        
         # define gencode
-        def gencode(image,x,y):
+        def gencode(self,image,x,y):
             """generate display codes for 2x3 block"""
             dark,light = findDarkLight(image,x,y)
             v = 0
@@ -60,16 +60,21 @@ class Converter:
                     v = (v >> 1)
                     if im.getpixel((x+i,y+j)) == light:
                          v = v | (1 << 5)
-            c = '\x1b{0}\x1b{1}{2}'.format(chr(0x40+convcolor(light)),
-                                            chr(0x50+convcolor(dark)),
-                                            chr(32+v))
+            c = ''
+            if light != self.lastlight:
+                c = c + '\x1b' + chr(0x40+convcolor(light))
+            if dark != self.lastdark:
+                c = c + '\x1b' + chr(0x50+convcolor(dark))
+            c = c + chr(32+v)
+            self.lastlight,self.lastdark = light,dark
             return c
 
         # generate codes for videotex
+        self.lastdark, self.lastlight = -255, -255
         codes = ''
         for j in range(24):
             for i in range(40):
-                codes = codes + gencode(im,i*2,j*3)
+                codes = codes + gencode(self,im,i*2,j*3)
             codes = codes
         return codes
 
