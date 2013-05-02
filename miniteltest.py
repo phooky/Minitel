@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import minitel
+from minitel import Minitel
 import unittest
 
 class FakeSerial():
@@ -18,9 +19,26 @@ class FakeSerial():
         self.closed = True
     
 class testMinitel(unittest.TestCase):
-    def testBadMode(self):
-        m = minitel.Minitel(FakeSerial())
-        self.assertRaises(ValueError, minitel.Minitel.setMode, m, 3)
+    def setUp(self):
+        'Give every test case a fakeserial and minitel for either mode.'
+        self.fser = FakeSerial()
+        self.miniv = Minitel(self.fser, mode=minitel.MODE_VIDEOTEX)
+        self.minia = Minitel(self.fser, mode=minitel.MODE_ANSI)
 
+
+    def testBadMode(self):
+        'Ensure that a bad mode value raises a ValueError.'
+        self.assertRaises(ValueError, Minitel.setMode, self.miniv, 100)
+
+    def testClearVideotex(self):
+        'Test clear screen for videotex'
+        self.miniv.clearScreen()
+        self.assertEquals(self.fser.written,'\x0c')
+
+    def testClearANSI(self):
+        'Test clear screen for ANSI'
+        self.minia.clearScreen()
+        self.assertEquals(self.fser.written,'\x1b[2J')
+        
 if __name__ == '__main__':
     unittest.main()

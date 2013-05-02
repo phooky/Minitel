@@ -29,8 +29,15 @@ class Minitel:
             raise ValueError('Unrecognized display mode')
         self.mode = mode
 
+    def isVT(self):
+        'Shorthand test to check for Videotex mode.'
+        return self.mode == MODE_VIDEOTEX
+
     def clearScreen(self):
         'Clear the terminal.'
+        if self.isVT(): self.ser.write('\x0c')
+        else: self.ser.write('\x1b[2J')
+        
     
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
@@ -53,8 +60,8 @@ if __name__ == '__main__':
                         bytesize=serial.SEVENBITS)
 
     if args.clear:
-        ser.write('\x1b[2J')
-        ser.write('\x0c')
+        # clearScreen
+        pass
     if args.prechar:
         ser.write(chr(args.prechar))
     if args.hexmode:
