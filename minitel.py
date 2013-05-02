@@ -4,6 +4,34 @@ from argparse import ArgumentParser
 import serial
 import sys
 
+# Minitel modes. Boots into Videotex.
+MODE_VIDEOTEX = 0
+MODE_ANSI = 1
+
+class Minitel:
+    def __init__(self,port=None,baud=4800,mode=MODE_VIDEOTEX):
+        '''Construct a minitel interface on a given port.
+        The port should be either a string describing the port,
+        or a previously constructed serial object.'''
+        self.setMode(mode)
+        self.baud = baud
+        if isinstance(port, basestring):
+            self.portName = port
+            self.ser = serial.Serial(port, baud, 
+                                     parity = serial.PARITY_EVEN,
+                                     bytesize = serial.SEVENBITS)
+        else: # presume it's a previously opened port
+            self.ser = port
+
+    def setMode(self,mode):
+        'Set videotex or ANSI mode.'
+        if mode not in [MODE_VIDEOTEX, MODE_ANSI]:
+            raise ValueError('Unrecognized display mode')
+        self.mode = mode
+
+    def clearScreen(self):
+        'Clear the terminal.'
+    
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
     parser.add_argument('--baud', type=int, default=4800)
