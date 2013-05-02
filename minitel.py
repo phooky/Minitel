@@ -76,7 +76,8 @@ class Minitel:
         else:
             if textMode & TALL or textMode & WIDE: raise ValueError('Illegal ANSI mode')
             if textMode & BLINK: self.send(SGR('5'))
-            elif self.textMode == NORMAL: self.send(SGR('0'))
+            elif textMode == NORMAL: self.send(SGR('0'))
+        self.textMode = textMode
             
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
