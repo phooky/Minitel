@@ -137,7 +137,9 @@ class Minitel:
                 self.send(SGR(str(40 + bg)))
             self.bg = bg
 
-    
+    def wait(self):
+        'Wait for all data to be transmitted.'
+        self.ser.flush()
             
 if __name__ == '__main__':
     parser = ArgumentParser(description='Write data to minitel terminal.')
