@@ -37,9 +37,9 @@ class Minitel:
         self.setMode(mode)
         self.baud = baud
         self.textMode = NORMAL
-        self.vtMode = VT_TEXT
-        self.fg = 7
-        self.bg = 0
+        self.vtMode = -1
+        self.fg = -1
+        self.bg = -1
         if isinstance(port, basestring):
             self.portName = port
             self.ser = serial.Serial(port, baud, 
@@ -48,6 +48,8 @@ class Minitel:
                                      timeout = 0.1)
         else: # presume it's a previously opened port
             self.ser = port
+        if mode == MODE_VIDEOTEX:
+            self.setVTMode(VT_TEXT)
 
     def setVTMode(self,vtMode):
         'Set graphics or character mode in videotex display mode'
@@ -120,6 +122,7 @@ class Minitel:
             self.send(CSI+str(y)+';'+str(x)+'H')
 
     def setColors(self,fg=-1,bg=-1):
+        print "colors",fg,bg
         if fg < -1 or fg > 7:
             raise ValueError('Foreground out of range: {0}'.format(fg))
         if bg < -1 or bg > 7:

@@ -25,7 +25,7 @@ for topic in sys.argv[1:]:
         c = mtimage.Converter(i)
         r = c.videotex_repr()
         ts = elem['timestamp']
-        m.send(r)
+        m.send(''.join(r))
         tf.close()
         m.wait()
         time.sleep(2.2)
