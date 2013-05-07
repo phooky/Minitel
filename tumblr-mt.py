@@ -10,7 +10,8 @@ import sys
 m = minitel.Minitel('/dev/ttyUSB0')
 m.clearScreen()
 m.setVTMode(minitel.VT_GRAPHICS)
-cons_key = 'HIyjBXdm0j0KPBh7HOjZRQHKCYsRbA5YcYTY9Q1aL4rette2zO'
+keydata = json.load(open('apikey'))
+cons_key = keydata['Consumer Key']
 apicall = 'http://api.tumblr.com/v2/tagged?tag={0}&api_key={1}'
 
 for topic in sys.argv[1:]:
