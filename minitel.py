@@ -84,6 +84,15 @@ class Minitel:
         'Send a newline/carriage return combo.'
         self.send('\n\r')
 
+    def readline(self):
+        'Read a line of data from the terminal.'
+        line = ''
+        while True:
+            c = self.recv(1)
+            if c in ['\n','\r']:
+                return line
+            line = line + c
+
     def send(self,data):
         'Shorthand for sending bytes to the minitel.'
         self.ser.write(data)
@@ -120,6 +129,13 @@ class Minitel:
             self.send('\x1f'+chr(65+y)+chr(65+x))
         else:
             self.send(CSI+str(y)+';'+str(x)+'H')
+
+    def showCursor(self,on=True):
+        if self.isVT():
+            if on:
+                self.send('\x11')
+            else:
+                self.send('\x14')
 
     def setColors(self,fg=-1,bg=-1):
         print "colors",fg,bg
