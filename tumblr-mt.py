@@ -7,7 +7,12 @@ import PIL.Image as Image
 import time
 import sys
 
-m = minitel.Minitel('/dev/ttyUSB0')
+if len(sys.argv) > 1:
+    port = sys.argv[1]
+else:
+    port = '/dev/ttyUSB0'
+
+m = minitel.Minitel(port)
 m.clearScreen()
 keydata = json.load(open('apikey'))
 cons_key = keydata['Consumer Key']
