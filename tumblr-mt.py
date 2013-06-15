@@ -6,12 +6,11 @@ import tempfile
 import PIL.Image as Image
 import time
 import sys
+from os import getenv
 
-if len(sys.argv) > 1:
-    port = sys.argv[1]
-else:
-    port = '/dev/ttyUSB0'
+port = getenv('PORT','/dev/ttyUSB0')
 
+print "Opening port {0}...".format(port)
 m = minitel.Minitel(port)
 m.clearScreen()
 keydata = json.load(open('apikey'))
