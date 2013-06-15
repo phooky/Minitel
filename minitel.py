@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 import serial
 import sys
+import time
 
 # Minitel modes. Boots into Videotex.
 MODE_VIDEOTEX = 0
@@ -87,11 +88,16 @@ class Minitel:
     def readline(self):
         'Read a line of data from the terminal.'
         line = ''
+        update_at = time.time() + 60.0
         while True:
             c = self.recv(1)
             if c in ['\n','\r']:
                 return line
             line = line + c
+            if time.time() > update_at:
+                update_at = time.time() + 60.0
+                print "cursor send"
+                self.showCursor()
 
     def send(self,data):
         'Shorthand for sending bytes to the minitel.'
