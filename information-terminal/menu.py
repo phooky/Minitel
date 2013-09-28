@@ -28,7 +28,8 @@ class Menu:
         m.moveCursor(0,7+len(self.entries))
         m.setTextMode(minitel.NORMAL)
         m.send('Enter a number from the menu above\n')
-        m.send('or "0" to return to the previous menu')
+        if len(parents) > 0:
+            m.send('or "0" to return to the previous menu')
     def __call__(self,m,parents):
         self.run(m,parents)
     def run(self,m,parents):
@@ -49,6 +50,7 @@ class Menu:
                         idx = val - 1
                         fn = self.entries[idx][1]
                         fn(m,parents[:]+[self])
+                        self.show(m,parents)
                 except:
                     pass
                 start_time = time.time()
