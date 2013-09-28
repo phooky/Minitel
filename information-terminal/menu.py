@@ -1,5 +1,6 @@
 import minitel
 import time
+import logging
 
 class Menu:
     'Create a minitel selection menu'
@@ -31,19 +32,25 @@ class Menu:
     def __call__(self,m,parents):
         self.run(m,parents)
     def run(self,m,parents):
+        logging.info('Entering menu {}.'.format(self.name))
+        start_time = time.time()
         self.show(m,parents)
-        while time.time() - start_time < timeout:
+        while time.time() - start_time < Menu.timeout:
             t = m.recv(1)
-            if t:
+            if t and t > 0:
+                logging.debug('Keypress {}'.format(t))
                 # attempt action
                 try:
                     val = int(t)
                     if val == 0:
+                        logging.info('Returning to parent menu.')
                         return
                     elif val < len(self.entries)+1:
                         idx = val - 1
                         fn = self.entries[idx][1]
                         fn(m,parents[:]+[self])
+                except:
+                    pass
                 start_time = time.time()
-            else time.sleep(0.1)
-            
+            else: time.sleep(0.1)
+        logging.info('Menu timed out.')
