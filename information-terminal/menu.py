@@ -38,7 +38,7 @@ class Menu:
         self.show(m,parents)
         while time.time() - start_time < Menu.timeout:
             t = m.recv(1)
-            if t and t > 0:
+            if t:
                 logging.debug('Keypress {}'.format(t))
                 # attempt action
                 try:
@@ -46,10 +46,15 @@ class Menu:
                     if val == 0:
                         logging.info('Returning to parent menu.')
                         return
-                    elif val < len(self.entries)+1:
+                    elif val > 0 and val < len(self.entries)+1:
                         idx = val - 1
                         fn = self.entries[idx][1]
-                        fn(m,parents[:]+[self])
+                        logging.debug('Calling {}'.format(fn))
+                        try:
+                            fn(m,parents[:]+[self])
+                        except:
+                            logging.exception('Exception while running function')
+                        logging.debug('Returning from {}'.format(fn))
                         self.show(m,parents)
                 except:
                     pass

@@ -1,6 +1,7 @@
 import curses
 import logging
 from minitel import *
+import time
 
 # Minitel curses emulator
 
@@ -16,8 +17,14 @@ class MinitelCurses:
             self.setVTMode(VT_TEXT)
         self.stdscr = curses.initscr()
         self.stdscr.nodelay(True)
+        self.stdscr.scrollok(True)
         curses.noecho()
         curses.cbreak()
+
+    def close(self):
+        curses.nocbreak()
+        curses.echo()
+        curses.endwin()
 
     def setVTMode(self,vtMode):
         'Set graphics or character mode in videotex display mode'
@@ -57,16 +64,23 @@ class MinitelCurses:
 
     def send(self,data):
         'Shorthand for sending bytes to the minitel.'
+        data=data.replace('\r','')
         self.stdscr.addstr(data)
-
+        self.stdscr.refresh()
+        
     def recv(self,byteCount):
         'Shorthand for retrieving a number of bytes from the minitel.'
         s = ''
+        timeout = 0.1
+        end = time.time() + timeout
         while len(s) < byteCount:
             c = self.stdscr.getch()
             if c < 256 and c >= 0:
+                self.stdscr.echochar(chr(c))
                 s = s + chr(c)
             else:
+                if time.time() > end:
+                    return s
                 time.sleep(0.1)
         return s
     

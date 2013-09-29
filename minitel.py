@@ -52,6 +52,9 @@ class Minitel:
         if mode == MODE_VIDEOTEX:
             self.setVTMode(VT_TEXT)
 
+    def close(self):
+        self.ser.close()
+
     def setVTMode(self,vtMode):
         'Set graphics or character mode in videotex display mode'
         if not self.isVT():
@@ -96,7 +99,7 @@ class Minitel:
             line = line + c
             if time.time() > update_at:
                 update_at = time.time() + 60.0
-                print "cursor send"
+                print("cursor send")
                 self.showCursor()
 
     def send(self,data):
@@ -144,7 +147,7 @@ class Minitel:
                 self.send('\x14')
 
     def setColors(self,fg=-1,bg=-1):
-        print "colors",fg,bg
+        print("colors {} {}".format(fg,bg))
         if fg < -1 or fg > 7:
             raise ValueError('Foreground out of range: {0}'.format(fg))
         if bg < -1 or bg > 7:
