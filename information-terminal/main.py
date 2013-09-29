@@ -15,13 +15,11 @@ def mpass(m,parents):
     pass
 
 top = Menu('Main Menu','Welcome to NYC Resistor', [
-    ('Introduction',mpass),
-    ('Submenu',Menu('Submenu A', 'Submenu A', [
-        ('Submenu',Menu('Submenu B', 'Submenu B', [('ha',mpass),('woo',mpass)])),
-        ('foo',mpass),
-        ('bar',mpass)])),
-    ('Post-introduction',make_run_process('/usr/games/adventure',True))])
-
+    ('Frequently Asked Questions',mpass),
+    ('TinyMUSH',make_run_process(['telnet','192.155.89.149','4201'],False)),
+    ('Adventure Time',make_run_process('/usr/games/adventure',True)),
+])
+ 
 if __name__ == '__main__':
     port = os.getenv('PORT','/dev/ttyUSB0')
     baud = int(os.getenv('BAUD','4800'))

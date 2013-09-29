@@ -18,7 +18,7 @@ class Timeout:
         else:
             return time.time() - self.stamp > self.duration
 
-def make_run_process(command,wait_on_exit=False,no_input_timeout=60):
+def make_run_process(command,wait_on_exit=False,no_input_timeout=10*60):
     logging.debug('Creating process hook for {}'.format(command))
     def fn(m, parents):
         logging.debug('Running {}'.format(command))
