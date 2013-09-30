@@ -28,7 +28,7 @@ if __name__ == '__main__':
         if port == 'SIM':
             m = minitel_curses.MinitelCurses()
         else:
-            m = minitel.Minitel(port,baud)
+            m = minitel.Minitel(port,baud,minitel.MODE_ANSI)
         top.run(m,[])
     except:
         logging.exception('Could not open connection to minitel; aborting.')
