@@ -25,8 +25,10 @@ if __name__ == '__main__':
     baud = int(os.getenv('BAUD','4800'))
     logging.info('Opening minitel on port {} at {} 8N1'.format(port,baud))
     try:
-        #m = minitel.Minitel(port,baud)
-        m = minitel_curses.MinitelCurses()
+        if port == 'SIM':
+            m = minitel_curses.MinitelCurses()
+        else:
+            m = minitel.Minitel(port,baud)
         top.run(m,[])
     except:
         logging.exception('Could not open connection to minitel; aborting.')
