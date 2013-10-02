@@ -9,3 +9,15 @@ mtimage.py converts any normal image type into a full-screen image for the minit
 
 tumblr-mt.py is a script that searches Tumblr for posts matching the provided tags, finds the photo posts, and displays them on the Minitel. If no arguments are provided it displays a prompt and waits for tags to be entered by the user at the Minitel terminal.
 
+Using the Minitel to interact with terminal programs
+----------------------------------------------------
+
+You'll want to begin by setting the minitel into 80-column mode (fn-M A) and 4800 baud mode (fn-B 4). Then:
+
+* Set up and open a serial connection to the minitel. If you've put the minitel in 4800 baud mode (say, with Fn-B 4), then:
+  minicom -D /dev/ttyUSB0 -b 4800
+Leave the connection open by exiting with Ctrl-A J.
+* Set the tty to do newline processing correctly
+  stty opost onlcr icrnl </dev/ttyUSB0
+* Redirect your terminal program to talk to the minitel
+  adventure </dev/ttyUSB0 >/dev/ttyUSB0
