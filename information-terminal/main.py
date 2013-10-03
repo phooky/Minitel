@@ -6,7 +6,7 @@ import sys
 import time
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='/var/run/minitel/main.log',level=logging.DEBUG)
+    logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.DEBUG)
 
 from menu import Menu        
 from run_process import make_run_process
