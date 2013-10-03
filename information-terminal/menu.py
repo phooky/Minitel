@@ -20,7 +20,7 @@ class Menu:
         m.setTextMode(minitel.BOLD)
         m.send(self.name)
         m.moveCursor(6,2)
-        m.setTextMode(minitel.TALL | minitel.WIDE)
+        #m.setTextMode(minitel.TALL | minitel.WIDE)
         m.send(self.title)
         m.setTextMode(minitel.NORMAL)
         for i in range(len(self.entries)):
