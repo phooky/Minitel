@@ -18,10 +18,12 @@ class Timeout:
         else:
             return time.time() - self.stamp > self.duration
 
-def make_run_process(command,wait_on_exit=False,no_input_timeout=10*60):
+def make_run_process(command,wait_on_exit=False,no_input_timeout=10*60,col80=True):
     logging.debug('Creating process hook for {}'.format(command))
     def fn(m, parents):
         logging.debug('Running {}'.format(command))
+        if col80:
+            m.setMode(minitel.MODE_ANSI)
         m.clearScreen()
         m.setTextMode(minitel.NORMAL)
         m.moveCursor(0,0)

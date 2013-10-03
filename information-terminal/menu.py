@@ -10,6 +10,7 @@ class Menu:
         self.name = name
         self.title = title
     def show(self,m,parents):
+        m.setMode(minitel.MODE_VIDEOTEX)
         breadcrumbs = " > ".join([p.name for p in parents])
         m.showCursor(False)
         m.clearScreen()
