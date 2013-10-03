@@ -21,14 +21,14 @@ top = Menu('Main Menu','Welcome to NYC Resistor', [
 ])
  
 if __name__ == '__main__':
-    port = os.getenv('PORT','/dev/ttyUSB0')
+    port = os.getenv('PORT','/dev/ttyACM0')
     baud = int(os.getenv('BAUD','4800'))
     logging.info('Opening minitel on port {} at {} 8N1'.format(port,baud))
     try:
         if port == 'SIM':
             m = minitel_curses.MinitelCurses()
         else:
-            m = minitel.Minitel(port,baud,minitel.MODE_ANSI)
+            m = minitel.Minitel(port,baud,minitel.MODE_VIDEOTEX,hax=True)
         top.run(m,[])
     except:
         logging.exception('Could not open connection to minitel; aborting.')

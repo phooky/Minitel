@@ -31,10 +31,13 @@ def SGR(param):
     return CSI + str(param) + 'm'
 
 class Minitel:
-    def __init__(self,port=None,baud=4800,mode=MODE_VIDEOTEX):
+    def __init__(self,port=None,baud=4800,mode=MODE_VIDEOTEX,hax=False):
         '''Construct a minitel interface on a given port.
         The port should be either a string describing the port,
         or a previously constructed serial object.'''
+        # if true support 0xee/0xef mode switching
+        self.hax = hax
+        self.mode = MODE_VIDEOTEX
         self.setMode(mode)
         self.baud = baud
         self.textMode = NORMAL
@@ -73,7 +76,14 @@ class Minitel:
         'Set videotex or ANSI mode.'
         if mode not in [MODE_VIDEOTEX, MODE_ANSI]:
             raise ValueError('Unrecognized display mode')
+        if self.hax and mode != self.mode:
+            if mode == MODE_VIDEOTEX:
+                self.send('\xee')
+            else:
+                self.send('\xef')
         self.mode = mode
+
+            
 
     def isVT(self):
         'Shorthand test to check for Videotex mode.'
