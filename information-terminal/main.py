@@ -14,10 +14,15 @@ from run_process import make_run_process
 def mpass(m,parents):
     pass
 
-top = Menu('Main Menu','Welcome to NYC Resistor', [
-    ('Frequently Asked Questions',mpass),
+games = Menu('Games','Fun and Games', [
     ('TinyMUSH',make_run_process(['telnet','192.155.89.149','4201'],False)),
     ('Adventure Time',make_run_process('/usr/games/adventure',True)),
+    ('Rogue',make_run_process('/usr/bin/rogue',False))
+])
+
+top = Menu('Main','Welcome to NYC Resistor', [
+    ('Frequently Asked Questions',mpass),
+    ('Play a game',games)
 ])
  
 if __name__ == '__main__':

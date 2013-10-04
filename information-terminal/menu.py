@@ -11,13 +11,15 @@ class Menu:
         self.title = title
     def show(self,m,parents):
         m.setMode(minitel.MODE_VIDEOTEX)
-        breadcrumbs = " > ".join([p.name for p in parents])
+        breadcrumbs = " >".join([p.name+" " for p in parents])
         m.showCursor(False)
         m.clearScreen()
+        m.setColors(7,0)
         m.setColors(1,0)
         m.send(breadcrumbs)
-        m.send(" > ")
+        m.send("> ")
         m.setTextMode(minitel.BOLD)
+        m.setTextMode(minitel.BLINK)
         m.send(self.name)
         x = (40 - len(self.title))/2
         m.moveCursor(x,3)
@@ -34,7 +36,7 @@ class Menu:
         m.moveCursor(0,8+len(self.entries))
         m.send('Enter a number from the menu above')
         if len(parents) > 0:
-            m.send('\nor "0" to return to the previous menu')
+            m.send('\n\ror "0" to return to the previous menu')
     def __call__(self,m,parents):
         self.run(m,parents)
     def run(self,m,parents):
