@@ -28,21 +28,23 @@ class Pager:
         for line in f.readlines():
             lines = lines + textwrap.wrap(line,40)
         self.lines = lines
-        self.pages = len(self.lines)/20
+        self.pages = (len(self.lines)+18)/19
         f.close()
         
     def show(self, m, parents, page):
+	logging.debug("page {}".format(page))
         show_breadcrumbs(m,parents)
         m.send("> ")
         m.setTextMode(minitel.BOLD)
         m.send(self.name)
         m.setColors(1,0)
         m.send(" page {} of {}".format(page+1,self.pages))
-        li = 3
-        for line in self.lines[page*20:(page+1)*20]:
+        li = 2
+        for line in self.lines[page*19:(page+1)*19]:
             m.moveCursor(0,li)
             m.send(line)
             li = li + 1    
+
     def run(self, m, parents):
         page = 0
         start_time = time.time()
@@ -57,15 +59,16 @@ class Pager:
                         logging.info('Next.')
                         if page+1 < self.pages:
                             page = page + 1
-                            m.show(m,parents,page)
-                        return
+                            self.show(m,parents,page)
                     elif t == '<' or t == 'p':
                         logging.info('Prev.')
                         if page > 0:
                             page = page - 1
-                            m.show(m,parents,page)
+                            self.show(m,parents,page)
                     elif t == 'q' or t == '\n' or t == '\r':
                         return
+                except:
+                    logging.exception('oops')
                 start_time = time.time()
             else: time.sleep(0.1)
         logging.info('Menu timed out.')
