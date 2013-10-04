@@ -1,6 +1,76 @@
 import minitel
 import time
 import logging
+import textwrap
+
+def make_pager(path):
+    logging.debug('Creating pager for {}'.format(path))
+    def fn(m, parents):
+        show_breadcrumbs(m,parents)
+
+def show_breadcrumbs(m,parents):
+    m.setMode(minitel.MODE_VIDEOTEX)
+    breadcrumbs = " >".join([p.name+" " for p in parents])
+    m.showCursor(False)
+    m.clearScreen()
+    m.setColors(7,0)
+    m.setColors(1,0)
+    m.send(breadcrumbs)
+
+class Pager:
+    def __init__(self,name,path):
+        logging.debug('Creating pager for {}'.format(path))
+        self.path = path
+        self.name = name
+        self.pages = []
+        f = open(path)
+        lines = []
+        for line in f.readlines():
+            lines = lines + textwrap.wrap(line,40)
+        self.lines = lines
+        self.pages = len(self.lines)/20
+        f.close()
+        
+    def show(self, m, parents, page):
+        show_breadcrumbs(m,parents)
+        m.send("> ")
+        m.setTextMode(minitel.BOLD)
+        m.send(self.name)
+        m.setColors(1,0)
+        m.send(" page {} of {}".format(page+1,self.pages))
+        li = 3
+        for line in self.lines[page*20:(page+1)*20]:
+            m.moveCursor(0,li)
+            m.send(line)
+            li = li + 1    
+    def run(self, m, parents):
+        page = 0
+        start_time = time.time()
+        self.show(m,parents,page)
+        while time.time() - start_time < Menu.timeout:
+            t = m.recv(1)
+            if t:
+                logging.debug('Keypress {}'.format(t))
+                # attempt action
+                try:
+                    if t == '>' or t == ' ':
+                        logging.info('Next.')
+                        if page+1 < self.pages:
+                            page = page + 1
+                            m.show(m,parents,page)
+                        return
+                    elif t == '<' or t == 'p':
+                        logging.info('Prev.')
+                        if page > 0:
+                            page = page - 1
+                            m.show(m,parents,page)
+                    elif t == 'q' or t == '\n' or t == '\r':
+                        return
+                start_time = time.time()
+            else: time.sleep(0.1)
+        logging.info('Menu timed out.')
+    def __call__(self,m,parents):
+        self.run(m,parents)
 
 class Menu:
     'Create a minitel selection menu'
@@ -10,13 +80,7 @@ class Menu:
         self.name = name
         self.title = title
     def show(self,m,parents):
-        m.setMode(minitel.MODE_VIDEOTEX)
-        breadcrumbs = " >".join([p.name+" " for p in parents])
-        m.showCursor(False)
-        m.clearScreen()
-        m.setColors(7,0)
-        m.setColors(1,0)
-        m.send(breadcrumbs)
+        show_breadcrumbs(m,parents)
         m.send("> ")
         m.setTextMode(minitel.BOLD)
         m.setTextMode(minitel.BLINK)
