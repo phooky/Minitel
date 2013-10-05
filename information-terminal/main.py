@@ -8,7 +8,7 @@ import time
 if __name__ == '__main__':
     logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.DEBUG)
 
-from menu import Menu        
+from menu import Menu, Pager 
 from run_process import make_run_process
 
 def mpass(m,parents):
@@ -22,6 +22,7 @@ games = Menu('Games','Fun and Games', [
 
 top = Menu('Main','Welcome to NYC Resistor', [
     ('Frequently Asked Questions',mpass),
+    ('main.py',Pager('main code','main.py')),
     ('Play a game',games)
 ])
  
