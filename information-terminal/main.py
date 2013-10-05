@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import minitel
 import minitel_curses
 import logging
