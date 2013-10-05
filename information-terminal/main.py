@@ -34,7 +34,8 @@ if __name__ == '__main__':
             m = minitel_curses.MinitelCurses()
         else:
             m = minitel.Minitel(port,baud,minitel.MODE_VIDEOTEX,hax=True)
-        top.run(m,[])
+	while True:
+            top.run(m,[])
     except:
         logging.exception('Could not open connection to minitel; aborting.')
         sys.exit(1)
