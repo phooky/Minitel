@@ -60,12 +60,12 @@ class Pager:
                         if page+1 < self.pages:
                             page = page + 1
                             self.show(m,parents,page)
-                    elif t == '<' or t == 'p':
+                    elif t == '<' or t == 'P':
                         logging.info('Prev.')
                         if page > 0:
                             page = page - 1
                             self.show(m,parents,page)
-                    elif t == 'q' or t == '\n' or t == '\r':
+                    elif t == 'Q' or t == '\n' or t == '\r':
                         return
                 except:
                     logging.exception('oops')
@@ -120,7 +120,7 @@ class Menu:
                     self.show(m,parents)
                 try:
                     val = int(t)
-                    if val == 0:
+                    if val == 0 and len(parents) > 0:
                         logging.info('Returning to parent menu.')
                         return
                     elif val > 0 and val < len(self.entries)+1:

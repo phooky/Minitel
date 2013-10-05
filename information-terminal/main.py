@@ -26,6 +26,10 @@ top = Menu('Main','Welcome to NYC Resistor', [
     ('main.py',Pager('main code','main.py')),
     ('Play a game',games)
 ])
+
+def eat(m):
+    while len(m.recv(1)) == 0:
+        pass
  
 if __name__ == '__main__':
     port = os.getenv('PORT','/dev/ttyACM0')
@@ -36,10 +40,10 @@ if __name__ == '__main__':
             m = minitel_curses.MinitelCurses()
         else:
             m = minitel.Minitel(port,baud,minitel.MODE_VIDEOTEX,hax=True)
-        while m.recv(1) <= 0:
-            pass
 	while True:
+            eat(m)
             top.run(m,[])
+            logging.info('Top level menu exited; waiting for input.')
     except:
         logging.exception('Could not open connection to minitel; aborting.')
         sys.exit(1)
