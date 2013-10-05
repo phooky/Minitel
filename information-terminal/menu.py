@@ -112,6 +112,9 @@ class Menu:
             if t:
                 logging.debug('Keypress {}'.format(t))
                 # attempt action
+                if t == 0xED:
+                    logging.info("Wakeup recieved.")
+                    self.show(m,parents)
                 try:
                     val = int(t)
                     if val == 0:
