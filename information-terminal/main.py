@@ -34,6 +34,8 @@ if __name__ == '__main__':
             m = minitel_curses.MinitelCurses()
         else:
             m = minitel.Minitel(port,baud,minitel.MODE_VIDEOTEX,hax=True)
+        while m.recv(1) <= 0:
+            pass
 	while True:
             top.run(m,[])
     except:
