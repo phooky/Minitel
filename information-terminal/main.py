@@ -36,7 +36,7 @@ if __name__ == '__main__':
     baud = int(os.getenv('BAUD','4800'))
     logging.info('Opening minitel on port {} at {} 8N1'.format(port,baud))
     try:
-        if port == 'SIM':
+        if sys.argv[1] == 'sim':
             m = minitel_curses.MinitelCurses()
         else:
             m = minitel.Minitel(port,baud,minitel.MODE_VIDEOTEX,hax=True)

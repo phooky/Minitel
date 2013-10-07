@@ -1,0 +1,68 @@
+%menu Main
+Welcome to NYC Resistor
++About NYC Resistor:menu About
++Open Nights:menu Open Nights
++Calendar and Events:calendar
++Laser Usage:menu Laser
++Tumblr Time Tunnel:run tumblr-mt.py
++Games:menu Games
+
+%menu About
+About NYC Resistor
++What is NYC Resistor?:doc What
++Wifi Password:doc Wifi
++How to Get Here, or Out Of Here:doc Where
++A Brief Tour of NYCR:doc Tour
++History:doc History
++Hours:doc Hours
++Membership:doc Membership
+
+%doc History
+To do. It's a to-do-ocracy!
+
+%doc Hours
+NYCR has open nights on Mondays and Thursday evenings. Outside of those times, classes, and other open events, NYCR is not generally open to the public. If you'd like to visit outside of these times, drop us a line at contact@nycresistor.com and we'll work something out.
+Please note that NYCR is an 18+ space. Sorry!
+
+%doc Membership
+NYCR membership is by invitation. Stop by a few open nights and get to know us!
+
+%doc Wifi
+There's no password, doofus! The network is open for you to use; please don't abuse it. (To wit: nothing shady or high-bandwidth.) We have two primary networks: NYCR_5 and NYCR_24 at 5GHz and 2.4GHz; these are the preferred networks. If this network is not available, you can also use our backup network NYCR_CLEAR.
+
+%doc Where
+Our address is 87 3rd Avenue, Brooklyn, NY 11217.
+Public Transit:
+You can take the 2, 3, 4, 5, B, D, N, Q, and R lines from the Atlantic Avenue-Barclays Center stop, three blocks away. Please note that the R line does not run into Manhattan while the Montague Street tunnel is being repaired, through late 2014.
+You can also take the F and G lines at the Bergen Street stop, on Smith and Bergen.
+Cabs are usually available at most times of day and night on 4th Avenue, one block away.
+There are also a number of car services in the neighborhood.
+
+%doc Tour
+You're currently in the North Room of NYCR, where most classes and public events are held. Many simple tools can be found in the metal cabinet in the southeast corner of the room. Tape and adhesives are in a tall shelf next to the tools. Soldering irons are in clearly marked boxes in the white shelves on the south side of the room, between the archways to the south room. A spool of solder is attached to the east side of these shelves.
+The bathroom is behind the pink door to the north next to the sink; the door is often closed, so please knock.
+Our laser cutter and related supplies are through a small door to the northwest, near the entrance. That door is also generally closed to cut down on noise and smell in the main space.
+Through the archways is the south room. In the south room we keep member lockers as well as many common tools and supplies. At the east end of the south room is the entrance to tooltown, where we keep our heavy equipment. Tooltown is off-limits to non-members-- sorry!
+
+%doc What
+Situated in a charming pre-war Boerum Hill walkup with great personality, NYCR is a hackerspace-- a place where people can share their tools, time, and ideas in a friendly setting and create fantastic things. Our members hack code, make art, build robots, repair electronics, design contraptions, and whatever else seems fun at the time. While NYCR is a member-oriented space, we also have several open nights every week. We also teach a number of classes in electronics, programming, and fabrication; check the calendar to see what's coming up!
+But yes, basically it's a clubhouse for nerds.
+
+%menu Open Nights
+Open Nights at NYC Resistor
++General Rules:doc Rules
++Monday - Laser Night:doc Laser Night
++Thursday - Craft Night:doc Craft Night
+
+%doc Rules
+NYC Resistor is open to the public several nights a week. We do require that visitors be 18 years of age or older.
+Tooltown and the power tools within are restricted to member use only. The laser cutter/engraver is available for people who have taken the laser class; see our Laser entries for more details.
+Be polite and respectful to your fellow guests! We would like to make sure that everyone can feel comfortable hacking at NYCR on open nights. Play nice!
+Thanks for coming to Resistor! We're happy to see you.
+
+%doc Laser Night
+Laser Nights start Monday evenings at 7:30pm and run until 10:30pm. These nights are primarily to give people who have taken the laser class an opportunity to use the laser without scheduling an appointment. It's also a good time to stop by and hack on your projects and say hi to whoever happens to be around!
+
+%doc Craft Night
+To do ocracy!
+
