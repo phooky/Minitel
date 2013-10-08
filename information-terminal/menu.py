@@ -2,97 +2,44 @@ import minitel
 import time
 import logging
 import textwrap
+from screen import Screen
 
-def make_pager(path):
-    logging.debug('Creating pager for {}'.format(path))
-    def fn(m, parents):
-        show_breadcrumbs(m,parents)
-
-def show_breadcrumbs(m,parents):
-    m.setMode(minitel.MODE_VIDEOTEX)
-    breadcrumbs = " >".join([p.name+" " for p in parents])
-    m.showCursor(False)
-    m.clearScreen()
-    m.setColors(7,0)
-    m.setColors(1,0)
-    m.send(breadcrumbs)
-
-class Pager:
-    def __init__(self,name,path):
-        logging.debug('Creating pager for {}'.format(path))
-        self.path = path
-        self.name = name
-        self.pages = []
-        f = open(path)
-        lines = []
-        for line in f.readlines():
-            lines = lines + textwrap.wrap(line,40)
-        self.lines = lines
-        self.pages = (len(self.lines)+18)/19
-        f.close()
-        
-    def show(self, m, parents, page):
-	logging.debug("page {}".format(page))
-        show_breadcrumbs(m,parents)
-        m.send("> ")
-        m.setTextMode(minitel.BOLD)
-        m.send(self.name)
-        m.setColors(1,0)
-        m.send(" page {} of {}".format(page+1,self.pages))
-        li = 2
-        for line in self.lines[page*19:(page+1)*19]:
-            m.moveCursor(0,li)
-            m.send(line)
-            li = li + 1    
-
-    def run(self, m, parents):
-        page = 0
-        start_time = time.time()
-        self.show(m,parents,page)
-        while time.time() - start_time < Menu.timeout:
-            t = m.recv(1)
-            if t:
-                logging.debug('Keypress {}'.format(t))
-                # attempt action
-                try:
-                    if t == '>' or t == ' ':
-                        logging.info('Next.')
-                        if page+1 < self.pages:
-                            page = page + 1
-                            self.show(m,parents,page)
-                    elif t == '<' or t == 'P':
-                        logging.info('Prev.')
-                        if page > 0:
-                            page = page - 1
-                            self.show(m,parents,page)
-                    elif t == 'Q' or t == '\n' or t == '\r':
-                        return
-                except:
-                    logging.exception('oops')
-                start_time = time.time()
-            else: time.sleep(0.1)
-        logging.info('Menu timed out.')
-    def __call__(self,m,parents):
-        self.run(m,parents)
-
-class Menu:
+class Menu(Screen):
     'Create a minitel selection menu'
     timeout = 60*5 # Standard menu timeout: five minutes
-    def __init__(self,name,title,entries):
-        self.entries = entries
-        self.name = name
-        self.title = title
-    def show(self,m,parents):
-        show_breadcrumbs(m,parents)
-        m.send("> ")
-        m.setTextMode(minitel.BOLD)
-        m.setTextMode(minitel.BLINK)
-        m.send(self.name)
-        x = (40 - len(self.title))/2
-        m.moveCursor(x,3)
-        m.setTextMode(minitel.TALL)
-        m.send(self.title)
-        m.setTextMode(minitel.NORMAL)
+    def initialize(self,block):
+        self.block = block
+        self.name = block.name
+        self.entries = []
+        if len(block.lines) < 1:
+            raise BlockParsingException("Empty menu")
+        if block.lines[0].startswith('+'):
+            logging.info("Warning: menu with no title.")
+            self.title = ''
+            items = block.lines[:]
+        else:
+            self.title = block.lines[0]
+            items = block.lines[1:]
+        for item in items:
+            if not item:
+                pass # ignore blank lines
+            elif not item.startswith('+'):
+                raise BlockParsingException("Bad menu entry {}".format(item))
+            else:
+                s = item[1:].split(':',1)
+                if len(s) < 2:
+                    raise BlockParsingException("No colon in entry {}".format(item))
+                self.entries.append(s)
+
+    def show(self,m):
+        m.clearScreen()
+        self.show_breadcrumbs(m)
+        if self.title:
+            x = (40 - len(self.title))/2
+            m.moveCursor(x,3)
+            m.setTextMode(minitel.TALL)
+            m.send(self.title)
+            m.setTextMode(minitel.NORMAL)
         for i in range(len(self.entries)):
             m.moveCursor(4,6+i)
             m.setColors(7,0)
@@ -102,14 +49,15 @@ class Menu:
         m.setColors(1,0)
         m.moveCursor(0,8+len(self.entries))
         m.send('Enter a number from the menu above')
-        if len(parents) > 0:
+        if len(self.parents) > 0:
             m.send('\n\ror "0" to return to the previous menu')
     def __call__(self,m,parents):
-        self.run(m,parents)
-    def run(self,m,parents):
+        self.parents = parents
+        self.run(m)
+    def run(self,m):
         logging.info('Entering menu {}.'.format(self.name))
         start_time = time.time()
-        self.show(m,parents)
+        self.show(m)
         while time.time() - start_time < Menu.timeout:
             t = m.recv(1)
             if t:
@@ -117,22 +65,25 @@ class Menu:
                 # attempt action
                 if t == 0xED:
                     logging.info("Wakeup recieved.")
-                    self.show(m,parents)
+                    self.show(m)
                 try:
                     val = int(t)
-                    if val == 0 and len(parents) > 0:
+                    if val == 0 and len(self.parents) > 0:
                         logging.info('Returning to parent menu.')
                         return
                     elif val > 0 and val < len(self.entries)+1:
                         idx = val - 1
-                        fn = self.entries[idx][1]
+                        key = self.entries[idx][1]
+                        logging.debug('Entry *{}*'.format(key))
+                        logging.debug(self.content.keys())
+                        fn = self.content[key]
                         logging.debug('Calling {}'.format(fn))
                         try:
-                            fn(m,parents[:]+[self])
+                            fn(m,self.parents[:]+[self])
                         except:
                             logging.exception('Exception while running function')
                         logging.debug('Returning from {}'.format(fn))
-                        self.show(m,parents)
+                        self.show(m)
                 except:
                     pass
                 start_time = time.time()
