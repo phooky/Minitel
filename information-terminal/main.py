@@ -10,6 +10,7 @@ if __name__ == '__main__':
     logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.DEBUG)
 
 from menu import Menu
+from doc import Doc
 from blockparser import parse_file
 from run_process import make_run_process
 
@@ -34,6 +35,7 @@ def eat(m):
  
 typemap = {
     'menu':Menu,
+    'doc':Doc,
 }
 
 if __name__ == '__main__':
