@@ -55,7 +55,7 @@ if __name__ == '__main__':
     top = content['menu Main']
     
     try:
-        if sys.argv[1] == 'sim':
+        if len(sys.argv)>1 and sys.argv[1] == 'sim':
             m = minitel_curses.MinitelCurses()
         else:
             m = minitel.Minitel(port,baud,minitel.MODE_VIDEOTEX,hax=True)
