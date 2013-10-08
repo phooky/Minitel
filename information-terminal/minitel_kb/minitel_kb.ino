@@ -52,12 +52,13 @@ boolean v_mode = true;
 
 void press_key(int key, boolean fn) {
   if (fn) digitalWrite(FN_KEY,HIGH);
-  delay(100);
+  delay(250);
   digitalWrite(key,HIGH);
-  delay(200);
-  if (fn) digitalWrite(FN_KEY,LOW);
+  delay(400);
   digitalWrite(key,LOW);
-  delay(100);
+  delay(250);
+  if (fn) digitalWrite(FN_KEY,LOW);
+  delay(250);
 }
 
 void set_baud() {
