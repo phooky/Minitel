@@ -17,6 +17,12 @@ About NYC Resistor
 +Hours:doc Hours
 +Membership:doc Membership
 
+%menu Games
+Fun and Games
++TinyMUSH:run /usr/bin/telnet 192.155.89.149 4201
++Adventure:run /usr/games/adventure
++Rogue:run /usr/bin/rogue
+
 %doc History
 To do. It's a to-do-ocracy!
 

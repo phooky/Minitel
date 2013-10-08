@@ -84,7 +84,7 @@ class MinitelCurses:
                 time.sleep(0.1)
         return s
     
-    def setTextMode(self,textMode):
+    def setTextMode(self,textMode,force = False):
         if self.textMode == textMode:
             return
         self.textMode = textMode

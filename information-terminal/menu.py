@@ -3,6 +3,7 @@ import time
 import logging
 import textwrap
 from screen import Screen
+from run_process import make_run_process
 
 class Menu(Screen):
     'Create a minitel selection menu'
@@ -51,9 +52,37 @@ class Menu(Screen):
         m.send('Enter a number from the menu above')
         if len(self.parents) > 0:
             m.send('\n\ror "0" to return to the previous menu')
+
     def __call__(self,m,parents):
         self.parents = parents
         self.run(m)
+
+    def invoke(self,m,key):
+        fn = self.content.get(key,None)
+        if not fn:
+            kval = key.split(' ')
+            ktype = kval.pop(0)
+            if ktype == 'run':
+                logging.debug('running...')
+                args = {}
+                try:
+                    while len(kval) and kval[0].find('=') != -1:
+                        argk,argv = kval.pop(0).split('=',1)
+                        args[argk]=argv
+                    args['command'] = kval
+                except:
+                    logging.exception('oops')
+                logging.debug('call with {}'.format(args))
+                fn = make_run_process(**args)
+
+        logging.debug('Calling {}'.format(fn))
+        try:
+            fn(m,self.parents[:]+[self])
+        except:
+            logging.exception('Exception while running function')
+            logging.debug('Returning from {}'.format(fn))
+            
+
     def run(self,m):
         logging.info('Entering menu {}.'.format(self.name))
         start_time = time.time()
@@ -74,15 +103,7 @@ class Menu(Screen):
                     elif val > 0 and val < len(self.entries)+1:
                         idx = val - 1
                         key = self.entries[idx][1]
-                        logging.debug('Entry *{}*'.format(key))
-                        logging.debug(self.content.keys())
-                        fn = self.content[key]
-                        logging.debug('Calling {}'.format(fn))
-                        try:
-                            fn(m,self.parents[:]+[self])
-                        except:
-                            logging.exception('Exception while running function')
-                        logging.debug('Returning from {}'.format(fn))
+                        self.invoke(m,key)
                         self.show(m)
                 except:
                     pass
