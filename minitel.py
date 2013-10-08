@@ -119,8 +119,8 @@ class Minitel:
         'Shorthand for retrieving a number of bytes from the minitel.'
         return self.ser.read(byteCount)
     
-    def setTextMode(self,textMode):
-        if self.textMode == textMode:
+    def setTextMode(self,textMode,force = False):
+        if self.textMode == textMode and not force:
             return
         if self.isVT():
             if textMode & STRIKETHROUGH or textMode & UNDERLINE: 

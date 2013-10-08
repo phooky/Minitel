@@ -30,9 +30,10 @@ class Doc(Screen):
         for line in self.lines[page*height:(page+1)*height]:
             m.moveCursor(0,li)
             m.send(line)
-            li = li + 1    
+            li = li + 1
         m.moveCursor(0,23)
-        m.setColors(1,0)
+        m.setTextMode(minitel.NORMAL)
+        m.setColors(2,0)
         m.send("N: next page  P: previous page  Q: exit")
 
     def run(self, m):

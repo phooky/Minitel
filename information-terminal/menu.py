@@ -42,9 +42,9 @@ class Menu(Screen):
             m.setTextMode(minitel.NORMAL)
         for i in range(len(self.entries)):
             m.moveCursor(4,6+i)
-            m.setColors(7,0)
+            m.setColors(7)
             m.send('{}'.format(i+1))
-            m.setColors(1,0)
+            m.setColors(5)
             m.send('. {}'.format(self.entries[i][0]))
         m.setColors(1,0)
         m.moveCursor(0,8+len(self.entries))

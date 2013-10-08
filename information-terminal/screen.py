@@ -15,8 +15,9 @@ class Screen:
         self.content = None
 
     def show_breadcrumbs(self,m):
+        m.setTextMode(minitel.NORMAL,True)
         m.moveCursor(0,0)
-        m.setColors(1,0)
+        m.setColors(2)
         breadcrumbs = " >".join([p.name+" " for p in self.parents])
         m.send(breadcrumbs)
         m.send("> ")
