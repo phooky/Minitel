@@ -4,7 +4,7 @@ import logging
 import textwrap
 from screen import Screen
 
-height=16
+height=20
 timeout = 60 * 5
 
 class Doc(Screen):
@@ -31,6 +31,9 @@ class Doc(Screen):
             m.moveCursor(0,li)
             m.send(line)
             li = li + 1    
+        m.moveCursor(0,23)
+        m.setColors(1,0)
+        m.send("N: next page  P: previous page  Q: exit")
 
     def run(self, m):
         self.curpage = 0
@@ -52,7 +55,7 @@ class Doc(Screen):
                         if self.curpage > 0:
                             self.curpage = self.curpage - 1
                             self.draw(m)
-                    elif t in 'Qq\n\r':
+                    elif t in 'Qq0\n\r':
                         return
                 except:
                     logging.exception('oops')
