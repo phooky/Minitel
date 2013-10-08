@@ -91,6 +91,7 @@ class Minitel:
 
     def clearScreen(self):
         'Clear the terminal.'
+        self.invalidate()
         if self.isVT(): self.send('\x0c')
         else: self.send('\x1b[2J')
     
@@ -119,6 +120,11 @@ class Minitel:
         'Shorthand for retrieving a number of bytes from the minitel.'
         return self.ser.read(byteCount)
     
+    def invalidate(self):
+        self.textMode = None
+        self.fg = -1
+        self.bg = -1
+
     def setTextMode(self,textMode,force = False):
         if self.textMode == textMode and not force:
             return
