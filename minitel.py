@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 import serial
 import sys
 import time
+import logging
 
 # Minitel modes. Boots into Videotex.
 MODE_VIDEOTEX = 0
@@ -78,8 +79,10 @@ class Minitel:
             raise ValueError('Unrecognized display mode')
         if self.hax and mode != self.mode:
             if mode == MODE_VIDEOTEX:
+                logging.debug("TO VIDEOTEX")
                 self.send('\xee')
             else:
+                logging.debug("TO ANSI")
                 self.send('\xef')
         self.mode = mode
 

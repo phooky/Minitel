@@ -82,7 +82,8 @@ class Menu(Screen):
             logging.exception('Exception while running function')
             logging.debug('Returning from {}'.format(fn))
         finally:
-            m.setMode(Minitel.MODE_VIDEOTEX)
+            logging.debug("VIDEOTEX NOW")
+            m.setMode(minitel.MODE_VIDEOTEX)
             
 
     def run(self,m):
