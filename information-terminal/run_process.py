@@ -38,6 +38,10 @@ def make_run_process(command,wait_on_exit=False,no_input_timeout=10*60,col80=Tru
         fl = fcntl.fcntl(master, fcntl.F_GETFL)
         fcntl.fcntl(master, fcntl.F_SETFL, fl | os.O_NONBLOCK)
         tout = Timeout(no_input_timeout)
+
+        while len(m.recv(1)) == 0:
+            pass #eat data
+
         while proc.poll() == None and not tout.expired():
             try:
                 out = procout.read()

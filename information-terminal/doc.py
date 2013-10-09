@@ -29,6 +29,7 @@ class Doc(Screen):
         li = 2
         for line in self.lines[page*height:(page+1)*height]:
             m.moveCursor(0,li)
+            m.setColors(3,0,True)
             m.send(line)
             li = li + 1
         m.moveCursor(0,23)

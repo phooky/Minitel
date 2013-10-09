@@ -37,18 +37,21 @@ class Menu(Screen):
         self.show_breadcrumbs(m)
         if self.title:
             x = (40 - len(self.title))/2
-            m.moveCursor(x,3)
+            m.moveCursor(0,3)
+            t = [' ']*40
+            t[x:x+len(self.title)] = self.title
             m.setTextMode(minitel.TALL)
-            m.send(self.title)
+            m.setColors(7,2)
+            m.send(''.join(t))
             m.setTextMode(minitel.NORMAL)
         for i in range(len(self.entries)):
-            m.moveCursor(4,6+i)
-            m.setColors(7)
+            m.moveCursor(4,5+i)
+            m.setColors(7,0)
             m.send('{}'.format(i+1))
             m.setColors(5)
             m.send('. {}'.format(self.entries[i][0]))
-        m.setColors(1,0)
         m.moveCursor(0,8+len(self.entries))
+        m.setColors(1,0,True)
         m.send('Enter a number from the menu above')
         if len(self.parents) > 0:
             m.send('\n\ror "0" to return to the previous menu')

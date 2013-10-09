@@ -164,18 +164,18 @@ class Minitel:
             else:
                 self.send('\x14')
 
-    def setColors(self,fg=-1,bg=-1):
+    def setColors(self,fg=-1,bg=-1,force=False):
         if fg < -1 or fg > 7:
             raise ValueError('Foreground out of range: {0}'.format(fg))
         if bg < -1 or bg > 7:
             raise ValueError('Background out of range: {0}'.format(bg))
-        if fg != -1 and fg != self.fg:
+        if fg != -1 and (fg != self.fg or force):
             if self.isVT():
                 self.send(ESC+chr(0x40 + fg))
             else:
                 self.send(SGR(str(30 + fg)))
             self.fg = fg
-        if bg != -1 and bg != self.bg:
+        if bg != -1 and (bg != self.bg or force):
             if self.isVT():
                 self.send(ESC+chr(0x50 + bg))
             else:

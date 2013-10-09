@@ -99,7 +99,7 @@ class MinitelCurses:
             else:
                 curses.curs_set(0)
 
-    def setColors(self,fg=-1,bg=-1):
+    def setColors(self,fg=-1,bg=-1,force=False):
         if fg < -1 or fg > 7:
             raise ValueError('Foreground out of range: {0}'.format(fg))
         if bg < -1 or bg > 7:

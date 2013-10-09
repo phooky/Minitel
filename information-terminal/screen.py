@@ -21,6 +21,6 @@ class Screen:
         breadcrumbs = " > ".join(['']+[p.name for p in self.parents])
         m.send(breadcrumbs)
         m.send(" > ")
-        m.setColors(7,1)
+        m.setColors(6,1)
         m.send(self.name+' ')
         m.setColors(1,0)
