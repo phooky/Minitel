@@ -13,7 +13,7 @@ if __name__ == '__main__':
 from menu import Menu
 from doc import Doc
 from blockparser import parse_file
-from run_process import make_run_process
+#from run_process import make_run_process
 
 def mpass(m,parents):
     pass

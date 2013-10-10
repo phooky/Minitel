@@ -3,7 +3,7 @@ import time
 import logging
 import textwrap
 from screen import Screen
-from run_process import make_run_process
+from run_process import RunProcess
 
 class Menu(Screen):
     'Create a minitel selection menu'
@@ -76,7 +76,8 @@ class Menu(Screen):
                 except:
                     logging.exception('oops')
                 logging.debug('call with {}'.format(args))
-                fn = make_run_process(**args)
+                fn = RunProcess()
+                fn.initialize(**args)
 
         logging.debug('Calling {}'.format(fn))
         try:
@@ -109,7 +110,10 @@ class Menu(Screen):
                     elif val > 0 and val < len(self.entries)+1:
                         idx = val - 1
                         key = self.entries[idx][1]
-                        self.invoke(m,key)
+                        try:
+                            self.invoke(m,key)
+                        except:
+                            logging.exception("Process oops")
                         self.show(m)
                 except:
                     pass
