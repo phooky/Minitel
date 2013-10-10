@@ -5,6 +5,7 @@ import logging
 import os
 import sys
 import time
+from mt_calendar import Calendar
 
 if __name__ == '__main__':
     logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.DEBUG)
@@ -42,7 +43,9 @@ if __name__ == '__main__':
     port = os.getenv('PORT','/dev/ttyACM0')
     baud = int(os.getenv('BAUD','4800'))
     logging.info('Opening minitel on port {} at {} 8N1'.format(port,baud))
-    content = {}
+    content = {
+        'calendar' : Calendar()
+        }
     for (key,block) in parse_file('content/menus.mini').items():
         try:
             content[key] = typemap[block.type]()

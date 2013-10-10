@@ -14,6 +14,10 @@ class Screen:
         self.parents=[]
         self.content = None
 
+    def eat(self,m):
+        while len(m.recv(1)) == 0:
+            pass #eat data
+
     def show_breadcrumbs(self,m):
         m.setTextMode(minitel.NORMAL,True)
         m.moveCursor(0,0)
