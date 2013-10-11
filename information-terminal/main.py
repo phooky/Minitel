@@ -10,6 +10,7 @@ from mt_calendar import Calendar
 if __name__ == '__main__':
     logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.DEBUG)
 
+from tumblr_screen import TumblrScreen
 from menu import Menu
 from doc import Doc
 from blockparser import parse_file
@@ -44,7 +45,8 @@ if __name__ == '__main__':
     baud = int(os.getenv('BAUD','4800'))
     logging.info('Opening minitel on port {} at {} 8N1'.format(port,baud))
     content = {
-        'calendar' : Calendar()
+        'calendar' : Calendar(),
+        'tumblr' : TumblrScreen()
         }
     for (key,block) in parse_file('content/menus.mini').items():
         try:

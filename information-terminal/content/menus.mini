@@ -4,7 +4,7 @@ Welcome to NYC Resistor
 +Open Nights:menu Open Nights
 +Calendar and Events:calendar
 +Laser Usage:menu Laser
-+Tumblr Time Tunnel:run tumblr-mt.py
++Tumblr Time Tunnel:tumblr
 +Games:menu Games
 
 %menu About

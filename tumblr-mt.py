@@ -8,14 +8,13 @@ import time
 import sys
 from os import getenv
 
-port = getenv('PORT','/dev/ttyUSB0')
-
-print "Opening port {0}...".format(port)
-m = minitel.Minitel(port)
-m.clearScreen()
-keydata = json.load(open('apikey'))
-cons_key = keydata['Consumer Key']
 apicall = 'http://api.tumblr.com/v2/tagged?tag={0}&api_key={1}'
+cons_key = None
+
+def loadKey(path='apikey'):
+    global cons_key
+    keydata = json.load(open(path))
+    cons_key = keydata['Consumer Key']
 
 def centeredText(m,y,text,fg=-1,bg=-1):
     x = (40 - len(text))/2
@@ -25,8 +24,8 @@ def centeredText(m,y,text,fg=-1,bg=-1):
     m.setColors(fg,bg)
     m.send(text)
 
-topics = sys.argv[1:]
-if len(topics) == 0:
+def getTopics(m):
+    m.clearScreen()
     m.setVTMode(minitel.VT_TEXT)
     centeredText(m,5,' WELCOME TO TUMBLR.COM ',7,5)
     centeredText(m,8,'Enter tags to browse separated',7,0)
@@ -38,26 +37,36 @@ if len(topics) == 0:
     topics = [x.strip() for x in line.split(",")]
     print "Topics:",topics
     m.showCursor(False)
+    return topics
+
+def showTopics(m,topics):
     m.clearScreen()
-
-m.setVTMode(minitel.VT_GRAPHICS)
-    
-for topic in topics:
-    a = json.load(urllib2.urlopen(apicall.format(topic,cons_key)))
-    for elem in [x for x in a['response'] if x['type']=='photo']:
-        url = elem['photos'][0]['alt_sizes'][-2]['url']
-        tf=tempfile.TemporaryFile()
-        print("Loading image from {0}.".format(url))
-        tf.write(urllib2.urlopen(url).read())
-        tf.seek(0)
-        i = Image.open(tf)
-        c = mtimage.Converter(i)
-        r = c.videotex_repr()
-        ts = elem['timestamp']
-        m.send(''.join(r))
-        tf.close()
-        m.wait()
-        time.sleep(2.2)
+    m.setVTMode(minitel.VT_GRAPHICS)
+    for topic in topics:
+        a = json.load(urllib2.urlopen(apicall.format(topic,cons_key)))
+        for elem in [x for x in a['response'] if x['type']=='photo']:
+            url = elem['photos'][0]['alt_sizes'][-2]['url']
+            tf=tempfile.TemporaryFile()
+            print("Loading image from {0}.".format(url))
+            tf.write(urllib2.urlopen(url).read())
+            tf.seek(0)
+            i = Image.open(tf)
+            c = mtimage.Converter(i)
+            r = c.videotex_repr()
+            ts = elem['timestamp']
+            m.send(''.join(r))
+            tf.close()
+            m.wait()
+            time.sleep(2.2)
 
 
+if __name__ == '__main__':
+    loadKey()
+    port = getenv('PORT','/dev/ttyUSB0')
+    print "Opening port {0}...".format(port)
+    m = minitel.Minitel(port)
+    topics = sys.argv[1:]
+    if len(topics) == 0:
+        topics = getTopics(m)
+    showTopics(m,topics)
 
