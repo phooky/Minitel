@@ -39,17 +39,28 @@ def convcolor(value):
 class Converter:
     def __init__(self,image):
         self.img = image
-    def videotex_repr(self,w =80,h =72):
+    def videotex_repr(self,w =80,h =72, resize=True, offset=(0,0)):
         '''Return a list of strings, one for each line of characters
         in the converted image. The width and height are specified in
         subpixels, and are always rounded up to an even number (for x) or
         a multiple of 3 (for y).'''
-        # tweak w and h to proper values
-        w = ((w+1)/2)*2
-        h = ((h+2)/3)*3
-        # convert image to grayscale and resize
+        # convert image to grayscale
         im = self.img.convert("L")
-        im = im.resize((w,h),Image.ANTIALIAS)
+        if resize:
+            # tweak w and h to proper values
+            w = ((w+1)/2)*2
+            h = ((h+2)/3)*3
+            #  resize
+            im = im.resize((w,h),Image.ANTIALIAS)
+        else:
+            (w,h) = im.size
+            w = ((w+1)/2)*2
+            h = ((h+2)/3)*3
+            # align and paste rather than
+            # scale
+            i2 = Image.new("L",(w,h),"black")
+            i2.paste(im,offset)
+            im = i2
         # normalize contrast
         im = ImageOps.autocontrast(im)
         # down to 3-bit
