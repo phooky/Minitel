@@ -1,5 +1,6 @@
 %menu Main
 Welcome to NYC Resistor
++Map of NYCR:layout NYCR Map
 +About NYC Resistor:menu About
 +Open Nights:menu Open Nights
 +Calendar and Events:calendar
@@ -22,6 +23,21 @@ Fun and Games
 +TinyMUSH:run /usr/bin/telnet 192.155.89.149 4201
 +Adventure:run /usr/games/adventure
 +Rogue:run /usr/bin/rogue
+
+%layout NYCR Map
+image 0 1 map.png
+text 6  8  1.
+text 31 2  2.
+text 6  8  3.
+text 6  18 4.
+text 34 11 5.
+text 34 6  6.
+text 15 14 1. North room
+text 15 15 2. Laser room
+text 15 16 3. South room
+text 15 17 4. Tooltown
+text 15 18 5. Bathroom
+text 15 19 6. Stairs
 
 %doc History
 To do. It's a to-do-ocracy!
