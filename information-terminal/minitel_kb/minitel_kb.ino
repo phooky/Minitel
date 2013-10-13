@@ -91,6 +91,7 @@ void test_keys() {
   press_key(B_KEY,false);
   press_key(E_KEY,false);
   press_key(M_KEY,false);
+  press_key(FOUR_KEY,false);
 }
 
 void wake() {
@@ -125,8 +126,9 @@ void loop() {
       toggle_echo();
     } else if (b == 0xe0) {
       test_keys();
+    } else {
+      uart.write(b);
     }
-    uart.write(b);
   }
   if (uart.available() > 0) {
     wake();
