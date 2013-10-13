@@ -13,6 +13,7 @@ if __name__ == '__main__':
 from tumblr_screen import TumblrScreen
 from menu import Menu
 from doc import Doc
+from layout import Layout
 from blockparser import parse_file
 #from run_process import make_run_process
 
@@ -38,6 +39,7 @@ def eat(m):
 typemap = {
     'menu':Menu,
     'doc':Doc,
+    'layout':Layout,
 }
 
 if __name__ == '__main__':
