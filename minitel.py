@@ -125,6 +125,7 @@ class Minitel:
     
     def invalidate(self):
         self.textMode = None
+        self.vtMode = None
         self.fg = -1
         self.bg = -1
 
@@ -154,6 +155,7 @@ class Minitel:
     def moveCursor(self,x,y):
         if self.isVT():
             self.send('\x1f'+chr(65+y)+chr(65+x))
+            self.invalidate()
         else:
             self.send(CSI+str(y)+';'+str(x)+'H')
 
