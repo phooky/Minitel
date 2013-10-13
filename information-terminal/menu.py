@@ -7,7 +7,6 @@ from run_process import RunProcess
 
 class Menu(Screen):
     'Create a minitel selection menu'
-    timeout = 60*5 # Standard menu timeout: five minutes
     def initialize(self,block):
         self.block = block
         self.name = block.name
@@ -92,17 +91,15 @@ class Menu(Screen):
 
     def run(self,m):
         logging.info('Entering menu {}.'.format(self.name))
-        start_time = time.time()
         self.show(m)
-        while time.time() - start_time < Menu.timeout:
+        while True:
             t = m.recv(1)
             if t:
-                logging.debug('Keypress {}'.format(t))
                 # attempt action
-                if t == 0xED:
+                if t in '\xed ':
                     logging.info("Wakeup recieved.")
                     self.show(m)
-                try:
+                if t in '1234567890':
                     val = int(t)
                     if val == 0 and len(self.parents) > 0:
                         logging.info('Returning to parent menu.')
@@ -113,10 +110,8 @@ class Menu(Screen):
                         try:
                             self.invoke(m,key)
                         except:
-                            logging.exception("Process oops")
+                            logging.exception("Invocation oops")
                         self.show(m)
                 except:
                     pass
-                start_time = time.time()
             else: time.sleep(0.1)
-        logging.info('Menu timed out.')
