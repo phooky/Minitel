@@ -112,6 +112,4 @@ class Menu(Screen):
                         except:
                             logging.exception("Invocation oops")
                         self.show(m)
-                except:
-                    pass
             else: time.sleep(0.1)

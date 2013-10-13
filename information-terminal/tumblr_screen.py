@@ -1,5 +1,3 @@
-from tumblr-mt
-
 import logging
 import minitel
 import time
@@ -11,6 +9,6 @@ class TumblrScreen(Screen):
     def __call__(self,m,parents):
         self.parents = parents
         loadKey('../apikey')
-        topics = getTopics()
-        showTopics(topics)
+        topics = getTopics(m)
+        showTopics(m,topics)
 

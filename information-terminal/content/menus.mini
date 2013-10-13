@@ -26,7 +26,7 @@ Fun and Games
 
 %layout NYCR Map
 image 0 1 content/map.png
-text 6  8  1.
+text 20 8  1.
 text 31 2  2.
 text 6  8  3.
 text 6  18 4.

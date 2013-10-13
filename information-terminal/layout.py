@@ -15,34 +15,34 @@ class Layout(Screen):
     def draw_image(self,m,x,y,path):
         i = Image.open(path)
         c = mtimage.Converter(i)
-        r = c.videotex_repr()
+        r = c.videotex_repr(resize=False)
         for line in r:
             m.moveCursor(x,y)
             y = y + 1
-            m.setVTMode(Minitel.VT_GRAPHICS)
+            m.setVTMode(minitel.VT_GRAPHICS)
             m.send(line)
 
     def draw_text(self,m,x,y,text):
         m.moveCursor(x,y)
-        m.setVTMode(Minitel.VT_TEXT)
+        m.setVTMode(minitel.VT_TEXT)
         m.setColors(7,0)
         m.send(text)
 
     def show(self,m):
         m.clearScreen()
         self.show_breadcrumbs(m)
-        for line in block.lines:
+        for line in self.block.lines:
             try:
                 line = line.strip()
                 if not line:
                     continue
-                etype, x, y, data = line.split(' ',3)
+                etype, x, y, data = line.split(None,3)
                 x = int(x)
                 y = int(y)
                 if etype == 'image':
-                    draw_image(m,x,y,data)
+                    self.draw_image(m,x,y,data)
                 elif etype == 'text':
-                    draw_text(m,x,y,text)
+                    self.draw_text(m,x,y,data)
                 else:
                     logging.error("Unrecognized line type {}".format(etype))
             except:
