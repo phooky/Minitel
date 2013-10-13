@@ -9,6 +9,7 @@ HardwareSerial uart = HardwareSerial();
 #define FOUR_KEY 13
 #define V_KEY 14
 #define A_KEY 15
+#define E_KEY 3
 
 #define SPACE_D1 21
 #define SPACE_D2 20
@@ -44,6 +45,7 @@ void setup() {
   digitalWrite(FOUR_KEY,LOW); pinMode(FOUR_KEY,OUTPUT);
   digitalWrite(V_KEY,LOW); pinMode(V_KEY,OUTPUT);
   digitalWrite(A_KEY,LOW); pinMode(A_KEY,OUTPUT);
+  digitalWrite(E_KEY,LOW); pinMode(E_KEY,OUTPUT);
 }
 
 boolean is_awake = false;
@@ -51,13 +53,17 @@ unsigned long last_wake = 0;
 boolean v_mode = true;
 
 void press_key(int key, boolean fn) {
-  if (fn) digitalWrite(FN_KEY,HIGH);
+  if (fn) {
+    digitalWrite(FN_KEY,HIGH);
+  }
   delay(250);
   digitalWrite(key,HIGH);
   delay(400);
   digitalWrite(key,LOW);
   delay(250);
-  if (fn) digitalWrite(FN_KEY,LOW);
+  if (fn) {
+    digitalWrite(FN_KEY,LOW);
+  }
   delay(250);
 }
 
@@ -72,6 +78,19 @@ void enter_mode(boolean mode) {
     press_key(M_KEY,true);
     press_key(mode?V_KEY:A_KEY,false);
   }
+}
+
+void toggle_echo() {
+  press_key(M_KEY,true);
+  press_key(E_KEY,false);
+}
+
+void test_keys() {
+  press_key(V_KEY,false);
+  press_key(A_KEY,false);
+  press_key(B_KEY,false);
+  press_key(E_KEY,false);
+  press_key(M_KEY,false);
 }
 
 void wake() {
@@ -102,6 +121,10 @@ void loop() {
       enter_mode(true);
     } else if (b == 0xef) {
       enter_mode(false);
+    } else if (b == 0xec) {
+      toggle_echo();
+    } else if (b == 0xe0) {
+      test_keys();
     }
     uart.write(b);
   }
