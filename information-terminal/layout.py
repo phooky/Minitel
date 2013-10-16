@@ -6,6 +6,28 @@ import textwrap
 import PIL.Image as Image
 from screen import Screen
 
+class ImageCache:
+    def __init__(self):
+        self.cache = {}
+
+    def load(self,path):
+        i = Image.open(path)
+        c = mtimage.Converter(i)
+        r = c.videotex_repr(resize=False)
+        self.cache[path] = (time.time(),r)
+
+    def get(self, path):
+        if not path in self.cache:
+            self.load(path)
+        else:
+            (timestamp, rep) = self.cache[path]
+            mtime = os.path.getmtime(path)
+            if mtime > timestamp:
+                self.load(path)
+        return self.cache[path][1]
+
+image_cache = ImageCache()
+
 class Layout(Screen):
     'Create a minitel layout'
     def initialize(self,block):
@@ -13,9 +35,8 @@ class Layout(Screen):
         self.name = block.name
 
     def draw_image(self,m,x,y,path):
-        i = Image.open(path)
-        c = mtimage.Converter(i)
-        r = c.videotex_repr(resize=False)
+        global image_cache
+        r = image_cache.get(path)
         for line in r:
             m.moveCursor(x,y)
             y = y + 1
