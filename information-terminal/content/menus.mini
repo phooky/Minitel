@@ -22,7 +22,7 @@ About NYC Resistor
 Fun and Games
 +TinyMUSH:run /usr/bin/telnet 192.155.89.149 4201
 +Adventure:run /usr/games/adventure
-+Rogue:run /usr/bin/rogue
++Rogue:run echo_off=True /usr/bin/rogue
 
 %layout NYCR Map
 image 0 1 content/map.png

@@ -70,6 +70,8 @@ class Menu(Screen):
                 try:
                     while len(kval) and kval[0].find('=') != -1:
                         argk,argv = kval.pop(0).split('=',1)
+                        if argv == 'True':argv=True
+                        if argv == 'False':argv=False
                         args[argk]=argv
                     args['command'] = kval
                 except:
