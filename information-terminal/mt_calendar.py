@@ -5,6 +5,7 @@ import dateutil.parser
 from screen import Screen
 import time
 import minitel
+import logging
 
 cal_url = "https://www.googleapis.com/calendar/v3/calendars/p2m2av9dhrh4n1ub7jlsc68s7o%40group.calendar.google.com/events?orderBy=startTime&singleEvents=true&timeMax={}Z&timeMin={}Z&key={}"
 
@@ -27,13 +28,18 @@ class Calendar(Screen):
         prep = cal_url.format(urllib.quote(end.isoformat('T')),
                               urllib.quote(start.isoformat('T')),
                               gapi_key)
-        print prep
         items = json.load(urllib.urlopen(prep))
         def get_info(i):
-            summary = i['summary']
+            try:
+                summary = i['summary']
+            except KeyError:
+                logging.error(json.dumps(i))
             start = dateutil.parser.parse(i['start']['dateTime'])
             return (summary,start)
-        return map(get_info,items['items'])
+        def is_visible(i):
+            v = i.get('visibility','default')
+            return v in ['default','public']
+        return map(get_info,filter(is_visible,items['items']))
 
     def draw(self, m):
         m.clearScreen()
