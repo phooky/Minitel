@@ -8,7 +8,7 @@ import time
 from mt_calendar import Calendar
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.DEBUG)
+    logging.basicConfig(filename='/var/log/minitel/main.log',level=logging.INFO)
 
 from tumblr_screen import TumblrScreen
 from menu import Menu
