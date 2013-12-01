@@ -1,22 +1,23 @@
 %menu Main
-Welcome to NYC Resistor
+Welcome to INFORMATION
 +Map of NYCR:layout NYCR Map
-+About NYC Resistor:menu About
-+Open Nights:menu Open Nights
++Hours:doc Hours
++Wifi Password:doc Wifi
 +Calendar and Events:calendar
 +Laser Usage:menu Laser
 +Tumblr Time Tunnel:tumblr
 +Games:menu Games
++About NYC Resistor:menu About
++REBOOT TERMINAL:run /sbin/reboot
 
 %menu About
 About NYC Resistor
++About Open Nights:menu Open Nights
 +What is NYC Resistor?:doc What
-+Wifi Password:doc Wifi
-+How to Get Here, or Out Of Here:doc Where
 +A Brief Tour of NYCR:doc Tour
 +History:doc History
-+Hours:doc Hours
 +Membership:doc Membership
++How to Get Here, or Out Of Here:doc Where
 
 %menu Games
 Fun and Games
