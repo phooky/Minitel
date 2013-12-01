@@ -20,19 +20,22 @@ class Timeout:
             return time.time() - self.stamp > self.duration
 
 class RunProcess(Screen):
-    def initialize(self,command=None,wait_on_exit=False,no_input_timeout=10*60,col80=True,lfcr=True):
+    def initialize(self,command=None,wait_on_exit=False,no_input_timeout=10*60,col80=True,lfcr=True,echo_off=False):
         logging.debug('Creating process hook for {}'.format(command))
         self.lfcr = lfcr
         self.command = command
         self.wait_on_exit = wait_on_exit
         self.no_input_timeout = no_input_timeout
         self.col80 = col80
+        self.echo_off = echo_off
 
     def __call__(self,m,parents):
         self.parents = parents
         logging.debug('Running {}'.format(self.command))
         if self.col80:
             m.setMode(minitel.MODE_ANSI)
+        if self.echo_off:
+            m.send('\xec')
         m.clearScreen()
         m.setTextMode(minitel.NORMAL)
         m.moveCursor(0,0)

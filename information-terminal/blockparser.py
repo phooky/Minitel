@@ -11,7 +11,9 @@ def parse_file(path):
     blocks = {}
     curblock = []
     for line in f.readlines():
-        if line.startswith('%'):
+	if line.startswith('//'):
+            pass
+        elif line.startswith('%'):
             tag = line[1:].strip()
             blocktype, blockname = tag.split(' ',1)
             curblock = Block(blocktype,blockname)

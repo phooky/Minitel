@@ -5,6 +5,7 @@ import logging
 import textwrap
 import PIL.Image as Image
 from screen import Screen
+import os.path
 
 class ImageCache:
     def __init__(self):

@@ -14,7 +14,7 @@ class Doc(Screen):
         self.pages = []
         lines = []
         for line in block.lines:
-            lines = lines + textwrap.wrap(line,40)
+            lines = lines + textwrap.wrap(line,40) + ['']
         self.lines = lines
         self.pages = (len(self.lines)+height-1)/height
         self.curpage = 0
@@ -25,7 +25,7 @@ class Doc(Screen):
         m.clearScreen()
         self.show_breadcrumbs(m)
         m.setColors(1,0)
-        m.send(" page {} of {}".format(page+1,self.pages))
+        m.send(" pg {} of {}".format(page+1,self.pages))
         li = 2
         for line in self.lines[page*height:(page+1)*height]:
             m.moveCursor(0,li)
