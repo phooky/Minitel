@@ -13,8 +13,8 @@ port = getenv('PORT','/dev/ttyUSB0')
 print "Opening port {0}...".format(port)
 m = minitel.Minitel(port)
 m.clearScreen()
-keydata = json.load(open('apikey'))
-cons_key = keydata['Consumer Key']
+#keydata = json.load(open('apikey'))
+#cons_key = keydata['Consumer Key']
 apicall = 'http://api.tumblr.com/v2/tagged?tag={0}&api_key={1}'
 
 def centeredText(m,y,text,fg=-1,bg=-1):
