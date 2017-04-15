@@ -388,9 +388,9 @@ F 3 "" H 1950 5950 50  0000 C CNN
 $EndComp
 Text GLabel 4000 5700 0    60   Input ~ 0
 CH_RED
-Text GLabel 3500 5600 0    60   Input ~ 0
-CH_BLUE
 Text GLabel 4000 5500 0    60   Input ~ 0
+CH_BLUE
+Text GLabel 3500 5600 0    60   Input ~ 0
 CH_GREEN
 $Comp
 L BNC P3
@@ -552,13 +552,13 @@ Wire Wire Line
 	2400 5350 2400 5500
 Connection ~ 2400 5500
 Wire Wire Line
-	3500 5600 4100 5600
-Wire Wire Line
-	4000 5500 4100 5500
-Wire Wire Line
 	4000 5700 4100 5700
 Wire Wire Line
 	3850 5900 4100 5900
 Wire Wire Line
 	4100 5800 3600 5800
+Wire Wire Line
+	3500 5600 4100 5600
+Wire Wire Line
+	4100 5500 4000 5500
 $EndSCHEMATC
