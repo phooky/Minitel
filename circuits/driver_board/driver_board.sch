@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:driver_board-rescue
 LIBS:local
 LIBS:power
 LIBS:device
@@ -29,6 +30,7 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
+LIBS:driver_board-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
@@ -556,7 +558,7 @@ Wire Wire Line
 Wire Wire Line
 	7400 2350 8250 2350
 $Comp
-L POT RV1
+L POT-RESCUE-driver_board RV1
 U 1 1 58F298D9
 P 7000 2300
 F 0 "RV1" H 7000 2220 50  0000 C CNN
@@ -567,7 +569,7 @@ F 3 "" H 7000 2300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L POT RV2
+L POT-RESCUE-driver_board RV2
 U 1 1 58F29997
 P 7000 2700
 F 0 "RV2" H 7000 2620 50  0000 C CNN
@@ -578,7 +580,7 @@ F 3 "" H 7000 2700 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L POT RV3
+L POT-RESCUE-driver_board RV3
 U 1 1 58F299E6
 P 7000 3100
 F 0 "RV3" H 7000 3020 50  0000 C CNN
@@ -589,7 +591,7 @@ F 3 "" H 7000 3100 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L POT RV4
+L POT-RESCUE-driver_board RV4
 U 1 1 58F29A35
 P 7000 3500
 F 0 "RV4" H 7000 3420 50  0000 C CNN
@@ -612,7 +614,7 @@ Wire Wire Line
 	7400 3350 7000 3350
 Connection ~ 7400 2950
 $Comp
-L POT RV5
+L POT-RESCUE-driver_board RV5
 U 1 1 58F29FCA
 P 7550 3850
 F 0 "RV5" H 7550 3770 50  0000 C CNN
