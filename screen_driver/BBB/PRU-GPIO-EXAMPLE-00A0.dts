@@ -37,7 +37,7 @@
    // Beware: Many other PRU EGP pins are reserved by HDMI or onboard flash, which  
    // would need to be disabled first by editing uEnv.txt and rebooting.  
    exclusive-use =  
-      "P8.11", "P8.16", "pru0";  
+      "P8.11", "P8.12", "P8.16", "pru0";  
    
    fragment@0 {  
     target = <&am33xx_pinmux>;  
@@ -60,19 +60,30 @@
        // or pulldown.  
        pinctrl-single,pins = <  
          0x34 0x06  
+	 0x30 0x06
          0x38 0x26  
        >;  
       };  
     };  
    };  
-   
+
+  fragment@1 {  
+    target = <&ocp>;  
+    __overlay__ {  
+      test_helper: helper {  
+        compatible = "bone-pinmux-helper";  
+        pinctrl-names = "default";  
+        pinctrl-0 = <&example_pins>;  
+        status = "okay";  
+      };  
+    };  
+  };  
+ 
    // This enables the PRU and assigns the GPIO pins to it for use in EGP mode.  
-   fragment@1 {  
+   fragment@2 {  
     target = <&pruss>;  
     __overlay__ {  
       status = "okay";  
-      pinctrl-names = "default";  
-      pinctrl-0 = <&example_pins>;  
     };  
    };  
  };  

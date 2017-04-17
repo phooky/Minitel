@@ -5,11 +5,13 @@
 TOP:
   MOV r1, 10 ; blink counter
 BLINK:
+  SET r30, r30, 14 ; set GPIO output 15
   SET r30, r30, 15 ; set GPIO output 15
   MOV r0, 0x00a00000 ; delay counter
 DELAY:
   SUB r0, r0, 1
   QBNE DELAY, r0, 0 ; loop until r0 == 0 (delay)
+  CLR r30, r30, 14  ; clear GPIO output 15
   CLR r30, r30, 15  ; clear GPIO output 15
   MOV r0, 0x00a00000 ; delay counter
 DELAY2:
