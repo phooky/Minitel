@@ -13,8 +13,6 @@
 #define DATA_ROWS 310
 #define RETRACE_ROWS 2
 
-#include "ws281x.hp"
-
 /** Register map */
 #define data_addr r0
 #define row r1
@@ -23,7 +21,7 @@
 #define pixel_data r5 // the next 20 registers, too
 #define tmp1 r28
 #define tmp2 r29
-   
+#define data_rows    
 /** Reset the cycle counter. Should be invoked once at the start
     of each row.
 */
@@ -62,13 +60,15 @@ TOP:
 	resetcounter
 HSYNC:
 	SET r30, r30, SYNC_BIT // Remember, bits are inverted
-	QBGE RETRACE_LINE, row, DATA_ROWS
+	MOV tmp1.w0, DATA_ROWS
+	QBGE RETRACE_LINE, row, tmp1.w0
 	waitforns 4500
 	CLR r30, r30, SYNC_BIT
 	waitforns 639800
 RETRACE_LINE:
 	ADD row, row, 1
-	QBLT SKIP_ROW_RESET, row, DATA_ROWS+RETRACE_ROWS
+	mov tmp1.w0, DATA_ROWS+RETRACE_ROWS
+	QBLT SKIP_ROW_RESET, row, tmp1.w0 
 	MOV row, 0
 SKIP_ROW_RESET:	
 	resetcounter
