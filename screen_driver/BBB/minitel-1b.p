@@ -1,8 +1,22 @@
-; blink.p: demonstration of PRU on the BeagleBone Black
-; blink LED connected to P8_11 ten times
+; Driver for the monitor of a Minitel 1B (weird US edition).
+; The horizontal line frequency is 15.63kHz.
+
+#define SYNC_BIT 0
+#define V0_BIT 5
+#define V1_BIT 3
+#define V2_BIT 1
+#define V3_BIT 2
+
+#define NOP ADD r0, r0, 0
+
+#define DATA_ROWS 310
+#define RETRACE_ROWS 2
+ 
+
 .origin 0
 .entrypoint TOP
 TOP:
+
   MOV r1, 10 ; blink counter
 BLINK:
   SET r30, r30, 14 ; set GPIO output 15
