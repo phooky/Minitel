@@ -1,6 +1,7 @@
-; Driver for the monitor of a Minitel 1B (weird US edition).
-; The horizontal line frequency is 15.63kHz.
-
+;;; Driver for the monitor of a Minitel 1B (weird US edition).
+;;; The horizontal line frequency is 15.63kHz.
+;;; Much of this code was poached from the IBM 5291 driver. 
+  
 #define SYNC_BIT 0
 #define V0_BIT 5
 #define V1_BIT 3
@@ -11,27 +12,65 @@
 
 #define DATA_ROWS 310
 #define RETRACE_ROWS 2
- 
 
+#include "ws281x.hp"
+
+/** Register map */
+#define data_addr r0
+#define row r1
+#define col r2
+#define timer_ptr r4
+#define pixel_data r5 // the next 20 registers, too
+#define tmp1 r28
+#define tmp2 r29
+   
+/** Reset the cycle counter. Should be invoked once at the start
+    of each row.
+*/
+.macro resetcounter
+	// Disable the counter and clear it, then re-enable it
+	// This starts our clock at the start of the row.
+	LBBO tmp2, timer_ptr, 0, 4
+	CLR tmp2, tmp2, 3 // disable counter bit
+	SBBO tmp2, timer_ptr, 0, 4 // write it back
+
+	MOV r10, 20 // 20: compensate for cycles in macro
+	SBBO r10, timer_ptr, 0xC, 4 // clear the timer
+
+	SET tmp2, tmp2, 3 // enable counter bit
+	SBBO tmp2, timer_ptr, 0, 4 // write it back
+.endm
+
+/** Wait for the cycle counter to hit the given absolute value.
+    The counter is reset at the start of each row.
+*/
+.macro waitforns
+.mparam ns
+	MOV tmp1, (ns)/5;
+waitloop:
+	LBBO tmp2, timer_ptr, 0xC, 4; /* read the cycle counter */
+	QBGT waitloop, tmp2, tmp1;
+.endm
+	
 .origin 0
 .entrypoint TOP
 TOP:
+	MOV row, 0
+	MOV col, 0
+	MOV timer_ptr, 0x22000 /* control register */
 
-  MOV r1, 10 ; blink counter
-BLINK:
-  SET r30, r30, 14 ; set GPIO output 15
-  SET r30, r30, 15 ; set GPIO output 15
-  MOV r0, 0x00a00000 ; delay counter
-DELAY:
-  SUB r0, r0, 1
-  QBNE DELAY, r0, 0 ; loop until r0 == 0 (delay)
-  CLR r30, r30, 14  ; clear GPIO output 15
-  CLR r30, r30, 15  ; clear GPIO output 15
-  MOV r0, 0x00a00000 ; delay counter
-DELAY2:
-  SUB r0, r0, 1
-  QBNE DELAY2, r0, 0 ; loop until r0 == 0 (delay)
-  SUB r1, r1, 1
-  QBNE BLINK, r1, 0 ; loop until r1 = 0 (blink counter)
-  MOV r31.b0, 32 + 3
-  HALT
+	resetcounter
+HSYNC:
+	SET r30, r30, SYNC_BIT // Remember, bits are inverted
+	QBGE RETRACE_LINE, row, DATA_ROWS
+	waitforns 4500
+	CLR r30, r30, SYNC_BIT
+	waitforns 639800
+RETRACE_LINE:
+	ADD row, row, 1
+	QBLT SKIP_ROW_RESET, row, DATA_ROWS+RETRACE_ROWS
+	MOV row, 0
+SKIP_ROW_RESET:	
+	resetcounter
+	JMP HSYNC
+	HALT
