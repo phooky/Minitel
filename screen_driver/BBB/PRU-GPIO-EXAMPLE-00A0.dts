@@ -37,31 +37,20 @@
    // Beware: Many other PRU EGP pins are reserved by HDMI or onboard flash, which  
    // would need to be disabled first by editing uEnv.txt and rebooting.  
    exclusive-use =  
-      "P8.11", "P8.12", "P8.16", "pru0";  
+	"P9.27", "P9.28", "P9.29", "P9.30", "p9.31",
+	"pru0";
    
    fragment@0 {  
     target = <&am33xx_pinmux>;  
     __overlay__ {  
-      example_pins: pinmux_pru_pru_pins {  
+      minitel_mon_pins: pinmux_pru_pru_pins {  
    
-       // The offset and mode for pins P8_11 and P8_16 also come from the table linked above.
-       //  
-       // That table gives offset 0x34 for P8_11, and 0x38 for P8_16.
-       // It also shows us we want pinmux mode 6 for P8_11 in output mode,  
-       // and again pinmux mode 6 for P8_16 in input mode.
-       // 
-       // Table 9-60 in the TRM: http://www.ti.com/lit/ug/spruh73l/spruh73l.pdf  
-       // helps us calculate the rest of the configuration value.  
-       //  
-       // For P8_11, the other fields are all 0, so the value is just 0x06.  
-       //  
-       // For P8_16, we want it to be an input, so we also set bit 5, yielding  
-       // a value of 0x26. We could also set bits 3 and 4 to enable a pullup  
-       // or pulldown.  
        pinctrl-single,pins = <  
-         0x34 0x06  
-	 0x30 0x06
-         0x38 0x26  
+	0x190 0x05 // P9 31 (SYNC)
+	0x1A4 0x05 // P9 27 (bit 0)
+	0x19C 0x05 // P9 28 (bit 1)
+	0x194 0x05 // P9 29 (bit 2)
+	0x198 0x05 // P9 30 (bit 3)
        >;  
       };  
     };  
@@ -73,7 +62,7 @@
       test_helper: helper {  
         compatible = "bone-pinmux-helper";  
         pinctrl-names = "default";  
-        pinctrl-0 = <&example_pins>;  
+        pinctrl-0 = <&minitel_mon_pins>;  
         status = "okay";  
       };  
     };  
