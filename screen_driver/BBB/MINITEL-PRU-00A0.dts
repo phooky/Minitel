@@ -1,12 +1,5 @@
- // This DTS overlay sets up one input and one output pin for use by  
- // PRU0 via its Enhanced GPIO mode, which will let us access those pins  
- // by writing to R30 bit 15 or reading from R31 bit 14.  
-   
- // Save this file wherever you want (but I recommend /lib/firmware), as  
- // "PRU-GPIO-EXAMPLE-00A0.dts".
-   
  // Compile with:
- // dtc -O dtb -I dts -o /lib/firmware/PRU-GPIO-EXAMPLE-00A0.dtbo -b 0 -@ PRU-GPIO-EXAMPLE-00A0.dts  
+ // dtc -O dtb -I dts -o /lib/firmware/MINITEL-PRU-00A0.dtbo -b 0 -@ MINITEL-PRU-00A0.dts  
    
  // You'll have to reboot, after which you can do this as root to activate it:  
  // echo PRU-GPIO-EXAMPLE > /sys/devices/bone_capemgr.?/slots  
@@ -18,9 +11,7 @@
    // This determines which boards can use this DTS overlay  
    compatible = "ti,beaglebone", "ti,beaglebone-green", "ti,beaglebone-black";  
    
-   // I think part-number is supposed to correspond with the filename,  
-   // so we'd save this as "PRU-GPIO-EXAMPLE-00A0.dts".  
-   part-number = "PRU-GPIO-EXAMPLE";  
+   part-number = "MINITEL-PRU";  
    
    // This always seems to be 00A0, and all the .dtbo files in /lib/firmware  
    // seem to be named foo-00A0.dtbo, but then are loaded without that suffix.  So
