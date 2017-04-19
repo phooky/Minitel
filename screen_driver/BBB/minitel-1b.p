@@ -11,7 +11,7 @@
 #define NOP ADD r0, r0, 0
 
 #define DATA_ROWS 310
-#define RETRACE_ROWS 2
+#define TOTAL_ROWS 312
 
 /** Register map */
 #define data_addr r0
@@ -53,24 +53,31 @@ waitloop:
 .origin 0
 .entrypoint TOP
 TOP:
+    // Enable OCP master port
+    // clear the STANDBY_INIT bit in the SYSCFG register,
+    // otherwise the PRU will not be able to write outside the
+    // PRU memory space and to the BeagleBon's pins.
+    LBCO	r0, C4, 4, 4
+    CLR		r0, r0, 4
+    SBCO	r0, C4, 4, 4
+
 	MOV row, 0
 	MOV col, 0
 	MOV timer_ptr, 0x22000 /* control register */
-
+	CLR r30, r30, SYNC_BIT
 	resetcounter
 HSYNC:
 	SET r30, r30, SYNC_BIT // Remember, bits are inverted
-	MOV tmp1.w0, DATA_ROWS
-	QBGE RETRACE_LINE, row, tmp1.w0
+	MOV tmp1, DATA_ROWS
+	QBLT RETRACE_LINE, row, tmp1
 	waitforns 4500
 	CLR r30, r30, SYNC_BIT
-	waitforns 639800
 RETRACE_LINE:
+	waitforns 63980
 	ADD row, row, 1
-	mov tmp1.w0, DATA_ROWS+RETRACE_ROWS
-	QBLT SKIP_ROW_RESET, row, tmp1.w0 
+	mov tmp1, TOTAL_ROWS
+	QBGE SKIP_ROW_RESET, row, tmp1 
 	MOV row, 0
 SKIP_ROW_RESET:	
 	resetcounter
 	JMP HSYNC
-	HALT
