@@ -2,7 +2,7 @@
 
 / {
 	compatible = "ti,beaglebone", "ti,beaglebone-black";
-	part-number = "BB-BONE-CLASSICMAC-01";
+	part-number = "MINITEL-TILCDC";
 	version = "00A0";
 	exclusive-use = "P8.45", "P8.46", "P8.43", "P8.44", "P8.41", "P8.42", "P8.39", "P8.40", "P8.37", "P8.38", "P8.36", "P8.34", "P8.35", "P8.33", "P8.31", "P8.32", "P8.27", "P8.29", "P8.28", "P8.30", "P9.14", "P9.16", "P9.15", "P9.23", "P9.27", "P9.12", "P9.42", "gpio1_18", "gpio1_19", "gpio1_16", "gpio1_17", "gpio3_19", "gpio0_7", "lcd", "tps-bl", "tscadc";
 
