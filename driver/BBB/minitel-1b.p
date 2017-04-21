@@ -18,38 +18,36 @@
 #define row r1
 #define col r2
 #define timer_ptr r4
-#define pixel_data r5 // the next 20 registers, too
+#define pixel_data r5  // r5 - r20
 #define tmp1 r28
 #define tmp2 r29
-#define data_rows    
+
 /** Reset the cycle counter. Should be invoked once at the start
-    of each row.
-*/
+    of each row. */
 .macro resetcounter
-	// Disable the counter and clear it, then re-enable it
-	// This starts our clock at the start of the row.
-	LBBO tmp2, timer_ptr, 0, 4
-	CLR tmp2, tmp2, 3 // disable counter bit
-	SBBO tmp2, timer_ptr, 0, 4 // write it back
+    // Disable the counter and clear it, then re-enable it
+    // This starts our clock at the start of the row.
+    LBBO tmp2, timer_ptr, 0, 4
+    CLR tmp2, tmp2, 3 // disable counter bit
+    SBBO tmp2, timer_ptr, 0, 4 // write it back
 
-	MOV r10, 20 // 20: compensate for cycles in macro
-	SBBO r10, timer_ptr, 0xC, 4 // clear the timer
+    MOV r10, 20 // 20: compensate for cycles in macro
+    SBBO r10, timer_ptr, 0xC, 4 // clear the timer
 
-	SET tmp2, tmp2, 3 // enable counter bit
-	SBBO tmp2, timer_ptr, 0, 4 // write it back
+    SET tmp2, tmp2, 3 // enable counter bit
+    SBBO tmp2, timer_ptr, 0, 4 // write it back
 .endm
 
 /** Wait for the cycle counter to hit the given absolute value.
-    The counter is reset at the start of each row.
-*/
+    The counter is reset at the start of each row. */
 .macro waitforns
 .mparam ns
-	MOV tmp1, (ns)/5;
+    MOV tmp1, (ns)/5;
 waitloop:
-	LBBO tmp2, timer_ptr, 0xC, 4; /* read the cycle counter */
-	QBGT waitloop, tmp2, tmp1;
+    LBBO tmp2, timer_ptr, 0xC, 4; /* read the cycle counter */
+    QBGT waitloop, tmp2, tmp1;
 .endm
-	
+    
 .origin 0
 .entrypoint TOP
 TOP:
@@ -57,27 +55,28 @@ TOP:
     // clear the STANDBY_INIT bit in the SYSCFG register,
     // otherwise the PRU will not be able to write outside the
     // PRU memory space and to the BeagleBon's pins.
-    LBCO	r0, C4, 4, 4
-    CLR		r0, r0, 4
-    SBCO	r0, C4, 4, 4
+    LBCO    r0, C4, 4, 4
+    CLR     r0, r0, 4
+    SBCO    r0, C4, 4, 4
 
-	MOV row, 0
-	MOV col, 0
-	MOV timer_ptr, 0x22000 /* control register */
-	CLR r30, r30, SYNC_BIT
-	resetcounter
+    MOV row, 0
+    MOV col, 0
+    MOV timer_ptr, 0x22000 /* control register */
+    CLR r30, r30, SYNC_BIT
+    resetcounter
 HSYNC:
-	SET r30, r30, SYNC_BIT // Remember, bits are inverted
-	MOV tmp1, DATA_ROWS
-	QBLT RETRACE_LINE, row, tmp1
-	waitforns 4500
-	CLR r30, r30, SYNC_BIT
+    SET r30, r30, SYNC_BIT // Remember, bits are inverted
+    MOV tmp1, DATA_ROWS
+    QBLT RETRACE_LINE, row, tmp1
+    waitforns 4500
+    CLR r30, r30, SYNC_BIT
 RETRACE_LINE:
-	waitforns 63980
-	ADD row, row, 1
-	mov tmp1, TOTAL_ROWS
-	QBGE SKIP_ROW_RESET, row, tmp1 
-	MOV row, 0
-SKIP_ROW_RESET:	
-	resetcounter
-	JMP HSYNC
+    waitforns 63980
+    ADD row, row, 1
+    mov tmp1, TOTAL_ROWS
+    QBGE SKIP_ROW_RESET, row, tmp1 
+    MOV row, 0
+SKIP_ROW_RESET: 
+    resetcounter
+    JMP HSYNC
+
