@@ -69,7 +69,7 @@
             #size-cells = <0x1>;
 
             panel {
-                compatible = "tilcdc,panel";
+                compatible = "ti,tilcdc,panel";
                 pinctrl-names = "default";
                 pinctrl-0 = <&bone_lcd_pins>;
 
@@ -90,22 +90,20 @@
                 };
 
                 display-timings {
-                    native-mode = <0x4>;
-
-                    512x384 {
-                        hactive = <512>;
-                        vactive = <384>;
-                        hback-porch = <1>;
-                        hfront-porch = <2>;
-                        hsync-len = <150>;
-                        vback-porch = <20>;
-                        vfront-porch = <10>;
-                        vsync-len = <4>; // in frames
-                        clock-frequency = <16000000>;
-                        hsync-active = <0x0>;
-                        vsync-active = <0x0>;
-                        linux,phandle = <0x4>;
-                        phandle = <0x4>;
+                    native-mode = <&timing0>;
+                    // 400x300
+                    timing0 {
+                        hactive = <400>;
+                        vactive = <300>;
+                        hback-porch = <40>;
+                        hfront-porch = <36>;
+                        hsync-len = <36>;
+                        vback-porch = <5>;
+                        vfront-porch = <5>;
+                        vsync-len = <2>; // in frames
+                        clock-frequency = <8000000>;
+                        hsync-active = <1>;
+                        vsync-active = <1>;
                     };
                 };
             };
