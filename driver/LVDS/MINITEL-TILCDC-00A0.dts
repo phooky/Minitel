@@ -1,4 +1,5 @@
 /dts-v1/;
+/plugin/;
 
 / {
     compatible = "ti,beaglebone", "ti,beaglebone-black";
@@ -30,10 +31,10 @@
         "lcd";
 
     fragment@0 {
-        target = <0xam33xx_pinmux>;
+        target = <&am33xx_pinmux>;
 
         __overlay__ {
-            bone_lcd_pins : pinmux_bone_lcd_pins {
+            bone_lcd_pins: pinmux_bone_lcd_pins {
                 pinctrl-single,pins = <
                     0xa0 0x08   /* lcd_data0 */
                     0xa4 0x08   /* lcd_data1 */
@@ -111,7 +112,7 @@
             fb {
                 compatible = "ti,am33xx-tilcdc";
                 reg = <0x4830e000 0x1000>;
-                interrupt-parent = <0xintc>;
+                interrupt-parent = <&intc>;
                 interrupts = <0x24>;
                 ti,hwmods = "lcdc";
             };
