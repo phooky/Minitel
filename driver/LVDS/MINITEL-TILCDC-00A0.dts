@@ -100,7 +100,7 @@
                         hsync-len = <36>;
                         vback-porch = <5>;
                         vfront-porch = <5>;
-                        vsync-len = <2>; // in frames
+                        vsync-len = <2>; 
                         clock-frequency = <8000000>;
                         hsync-active = <1>;
                         vsync-active = <1>;
@@ -111,10 +111,9 @@
             fb {
                 compatible = "ti,am33xx-tilcdc";
                 reg = <0x4830e000 0x1000>;
-                interrupt-parent = <0xdeadbeef>;
+                interrupt-parent = <0xintc>;
                 interrupts = <0x24>;
                 ti,hwmods = "lcdc";
-                ti,power-gpio = <0xdeadbeef 0x19 0x0>;
             };
         };
     };
