@@ -93,7 +93,7 @@
                 display-timings {
                     native-mode = <&timing0>;
                     // 400x300
-                    timing0 {
+                    timing0: 400x300 {
                         hactive = <400>;
                         vactive = <300>;
                         hback-porch = <40>;
