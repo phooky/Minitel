@@ -27,7 +27,6 @@
         "P8.29",    /* lcd: lcd_hsync       - WR */
         "P8.27",    /* lcd: lcd_vsync       - DC */
         "P8.30",    /* lcd: lcd_ac_bias_en  - CS*/
-        "P9.12",    /* Reset */
         "lcd";
 
     fragment@0 {
@@ -56,13 +55,12 @@
                     0xe4 0x00   /* lcd_hsync/wr */
                     0xe0 0x00   /* lcd_vsync/dc */
                     0xec 0x00   /* lcd_ac_bias_en/cs */
-                    0x78 0x7F   /* P9_12  60  OUTPUT MODE7 - RS  GPIO1_28 */
                 >;
             };
         };
     };
 
-    fragment@2 {
+    fragment@1 {
         target = <&ocp>;
 
         __overlay__ {
