@@ -68,6 +68,7 @@
             #size-cells = <0x1>;
 
             panel {
+		status = "okay";
                 compatible = "ti,tilcdc,panel";
                 pinctrl-names = "default";
                 pinctrl-0 = <&bone_lcd_pins>;
