@@ -93,14 +93,14 @@
                     native-mode = <&timing0>;
                     // 320x240 
                     // 400x300 outside
-                    timing0: 320x248 {
+                    timing0: 320x256 {
                         hactive = <320>;
-                        vactive = <248>;
+                        vactive = <256>;
                         hback-porch = <88>;
                         hfront-porch = <68>;
                         hsync-len = <36>;
                         vback-porch = <35>;
-                        vfront-porch = <27>;
+                        vfront-porch = <19>;
                         vsync-len = <2>; 
                         clock-frequency = <8000000>;
                         hsync-active = <1>;
