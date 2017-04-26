@@ -6,6 +6,12 @@
 #include <linux/fb.h>
 #include <sys/mman.h>
 
+int line_len, pix_len;
+
+inline size_t offset(int x, int y) {
+    return (y*line_len) + (x*pix_len);
+}
+
 int main(int argc, char* argv[]) {
     int fb_fd = 0;
     struct fb_var_screeninfo var_info;
@@ -29,14 +35,26 @@ int main(int argc, char* argv[]) {
     printf("FB display info: %dx%d, %d bpp\n",
            var_info.xres, var_info.yres, var_info.bits_per_pixel);
     long bufsz = fix_info.smem_len;
+    line_len = fix_info.line_length;
+    pix_len = 2;
     char* buffer = (char*)mmap(0, bufsz,
             PROT_READ | PROT_WRITE, MAP_SHARED,
             fb_fd, 0);
     if ((int)buffer == -1) {
         printf("Error mapping framebuffer.\n");
     } else {
-        memset(buffer, 0xff, bufsz/4);
-        memset(buffer + bufsz/4, 0, bufsz/4);
+        int j;
+        memset(buffer, 0x0, bufsz);
+        for (j = 0; j < 240; j++) {
+            buffer[offset(j,j)] = 0xff;
+            buffer[offset(j,j)+1] = 0xff;
+            buffer[offset(j,239-j)] = 0xff;
+            buffer[offset(319-j,239-j)] = 0xff;
+            buffer[offset(319-j,239-j)+1] = 0xff;
+            buffer[offset(319-j,j)] = 0xff;
+        }
+        buffer[offset(319,239)] = 0x0;
+        buffer[offset(319,239)+1] = 0x0;
     }
     munmap(buffer, bufsz);
     close(fb_fd);
