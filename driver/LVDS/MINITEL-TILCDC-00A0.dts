@@ -1,4 +1,5 @@
 /dts-v1/;
+/plugin/;
 
 / {
     compatible = "ti,beaglebone", "ti,beaglebone-black";
@@ -26,14 +27,13 @@
         "P8.29",    /* lcd: lcd_hsync       - WR */
         "P8.27",    /* lcd: lcd_vsync       - DC */
         "P8.30",    /* lcd: lcd_ac_bias_en  - CS*/
-        "P9.12",    /* Reset */
         "lcd";
 
     fragment@0 {
-        target = <0xam33xx_pinmux>;
+        target = <&am33xx_pinmux>;
 
         __overlay__ {
-            bone_lcd_pins : pinmux_bone_lcd_pins {
+            bone_lcd_pins: pinmux_bone_lcd_pins {
                 pinctrl-single,pins = <
                     0xa0 0x08   /* lcd_data0 */
                     0xa4 0x08   /* lcd_data1 */
@@ -55,13 +55,12 @@
                     0xe4 0x00   /* lcd_hsync/wr */
                     0xe0 0x00   /* lcd_vsync/dc */
                     0xec 0x00   /* lcd_ac_bias_en/cs */
-                    0x78 0x7F   /* P9_12  60  OUTPUT MODE7 - RS  GPIO1_28 */
                 >;
             };
         };
     };
 
-    fragment@2 {
+    fragment@1 {
         target = <&ocp>;
 
         __overlay__ {
@@ -69,6 +68,7 @@
             #size-cells = <0x1>;
 
             panel {
+		status = "okay";
                 compatible = "ti,tilcdc,panel";
                 pinctrl-names = "default";
                 pinctrl-0 = <&bone_lcd_pins>;
@@ -92,7 +92,7 @@
                 display-timings {
                     native-mode = <&timing0>;
                     // 400x300
-                    timing0 {
+                    timing0: 400x300 {
                         hactive = <400>;
                         vactive = <300>;
                         hback-porch = <40>;
@@ -111,7 +111,7 @@
             fb {
                 compatible = "ti,am33xx-tilcdc";
                 reg = <0x4830e000 0x1000>;
-                interrupt-parent = <0xintc>;
+                interrupt-parent = <&intc>;
                 interrupts = <0x24>;
                 ti,hwmods = "lcdc";
             };
