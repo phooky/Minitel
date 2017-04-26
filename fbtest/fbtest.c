@@ -23,6 +23,18 @@ int main(int argc, char* argv[]) {
     }
     printf("FB display info: %dx%d, %d bpp\n",
            var_info.xres, var_info.yres, var_info.bits_per_pixel);
+    long bufsz = var_info.smem_len;
+    char* buffer = (char*)mmap(0, bufsz,
+            PROT_READ | PROT_WRITE, MAP_SHARED,
+            fb_fd, 0);
+    if ((int)buffer == -1) {
+        printf("Error mapping framebuffer.\n");
+    } else {
+        memset(buffer, 0xff, bufsz/4);
+        memset(buffer + bufsz/4, 0, bufsz/4);
+    }
+    munmap(buffer, bufsz);
     close(fb_fd);
+
     return 0;
 }
