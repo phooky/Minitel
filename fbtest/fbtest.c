@@ -44,17 +44,15 @@ int main(int argc, char* argv[]) {
         printf("Error mapping framebuffer.\n");
     } else {
         int j;
+        int w = var_info.xres;
+        int h = var_info.yres;
         memset(buffer, 0x0, bufsz);
         for (j = 0; j < 240; j++) {
             buffer[offset(j,j)] = 0xff;
-            buffer[offset(j,j)+1] = 0xff;
-            buffer[offset(j,239-j)] = 0xff;
-            buffer[offset(319-j,239-j)] = 0xff;
-            buffer[offset(319-j,239-j)+1] = 0xff;
-            buffer[offset(319-j,j)] = 0xff;
+            buffer[offset(j,(h-1)-j)] = 0xff;
+            buffer[offset((w-2)-j,(h-1)-j)] = 0xff;
+            buffer[offset((w-2)-j,j)] = 0xff;
         }
-        buffer[offset(319,239)] = 0x0;
-        buffer[offset(319,239)+1] = 0x0;
     }
     munmap(buffer, bufsz);
     close(fb_fd);
