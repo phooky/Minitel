@@ -1,6 +1,7 @@
 sweep_angle = 7;
 
 bracket_th = 0.3175;
+board_th = 1.27;
 
 module board() {
     color("blue") {
@@ -15,12 +16,14 @@ module board() {
         }
     }
 }
+
+CRT_depth = 24;
+CRT_width = 23;
+CRT_height = 16.3;
+upright_height = 20;
+extension=2;
                     
 module CRT() {
-    CRT_depth = 24;
-    CRT_width = 23;
-    CRT_height = 16.3;
-    upright_height = 20;
     rotate(90,[1,0,0])
     color("green") {
         linear_extrude(height=CRT_depth, scale=0.2) {
@@ -28,16 +31,16 @@ module CRT() {
         }
     }
     color("gray") {
-        
-        translate([0,-1-bracket_th,0]) {
+        translate([0,-1-bracket_th,-extension/2]) {
             translate([-1-(CRT_width/2),0,0])
-            cube([2,2,upright_height],center=true);
+            cube([2,2,upright_height+extension],center=true);
             translate([1+(CRT_width/2),0,0])
-            cube([2,2,upright_height],center=true);
+            cube([2,2,upright_height+extension],center=true);
         }
     }
     translate([-1-(CRT_width/2),-2-bracket_th,0]) board();
 }
 
 
-rotate(sweep_angle, [1,0,0]) CRT();
+CRT();
+    
