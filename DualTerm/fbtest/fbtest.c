@@ -7,9 +7,46 @@
 #include <sys/mman.h>
 
 int line_len, pix_len;
+int xres, yres;
+char* buffer;
 
-inline size_t offset(int x, int y) {
+static inline size_t offset(int x, int y) {
     return (y*line_len) + (x*pix_len);
+}
+
+static inline void set_pixel(int x, int y, int val) {
+    size_t off = offset(x,y);
+    buffer[off] = (val >> 8) & 0xff;
+    buffer[off+1] = val & 0xff;
+}
+
+void draw_reticule() {
+    int i,j;
+    for (i = 0; i < xres-1; i++) {
+        set_pixel(i,0,0xff);
+        set_pixel(i,yres-1, 0xff);
+        set_pixel(i,yres/2, 0xff);
+    }
+    for (j = 0; j < yres; j++) {
+        set_pixel(0,j,0xff);
+        set_pixel(xres-2,j, 0xff);
+        set_pixel((xres-1)/2,j, 0xff);
+    }
+}
+
+void draw_blocks() {
+    int x, y, x1, y1, i;
+    int xoff = (xres-160)/2;
+    int yoff = (yres-160)/2;
+    for (i = 0; i < 16; i++) {
+        x1 = xoff + (i & 0x3)*40;
+        y1 = yoff + (i >> 2)*40;
+        for (x = x1; x < x1+40; x++) {
+            for (y = y1; y < y1+40; y++) {
+                set_pixel(x,y,i);
+            }
+        }
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -34,10 +71,12 @@ int main(int argc, char* argv[]) {
     }
     printf("FB display info: %dx%d, %d bpp\n",
            var_info.xres, var_info.yres, var_info.bits_per_pixel);
+    xres = var_info.xres;
+    yres = var_info.yres;
     long bufsz = fix_info.smem_len;
     line_len = fix_info.line_length;
     pix_len = 2;
-    char* buffer = (char*)mmap(0, bufsz,
+    buffer = (char*)mmap(0, bufsz,
             PROT_READ | PROT_WRITE, MAP_SHARED,
             fb_fd, 0);
     if ((int)buffer == -1) {
@@ -47,12 +86,8 @@ int main(int argc, char* argv[]) {
         int w = var_info.xres;
         int h = var_info.yres;
         memset(buffer, 0x0, bufsz);
-        for (j = 0; j < 240; j++) {
-            buffer[offset(j,j)] = 0xff;
-            buffer[offset(j,(h-1)-j)] = 0xff;
-            buffer[offset((w-2)-j,(h-1)-j)] = 0xff;
-            buffer[offset((w-2)-j,j)] = 0xff;
-        }
+        draw_reticule();
+        draw_blocks();
     }
     munmap(buffer, bufsz);
     close(fb_fd);
