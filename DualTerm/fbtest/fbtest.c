@@ -23,14 +23,14 @@ static inline void set_pixel(int x, int y, int val) {
 void draw_reticule() {
     int i,j;
     for (i = 0; i < xres-1; i++) {
-        set_pixel(i,0,0xff);
-        set_pixel(i,yres-1, 0xff);
-        set_pixel(i,yres/2, 0xff);
+        set_pixel(i,0,0xffff);
+        set_pixel(i,yres-1, 0xffff);
+        set_pixel(i,yres/2, 0xffff);
     }
     for (j = 0; j < yres; j++) {
-        set_pixel(0,j,0xff);
-        set_pixel(xres-2,j, 0xff);
-        set_pixel((xres-1)/2,j, 0xff);
+        set_pixel(0,j,0xffff);
+        set_pixel(xres-2,j, 0xffff);
+        set_pixel((xres-1)/2,j, 0xffff);
     }
 }
 
@@ -43,7 +43,7 @@ void draw_blocks() {
         y1 = yoff + (i >> 2)*40;
         for (x = x1; x < x1+40; x++) {
             for (y = y1; y < y1+40; y++) {
-                set_pixel(x,y,i);
+                set_pixel(x,y,i << 8);
             }
         }
     }
@@ -88,6 +88,7 @@ int main(int argc, char* argv[]) {
         memset(buffer, 0x0, bufsz);
         draw_reticule();
         draw_blocks();
+        printf("Drawn.\n");
     }
     munmap(buffer, bufsz);
     close(fb_fd);
