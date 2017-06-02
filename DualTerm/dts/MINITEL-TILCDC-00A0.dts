@@ -91,13 +91,13 @@
 
                 display-timings {
                     native-mode = <&timing0>;
-                    // 320x240 
+                    // 300x240 
                     // 400x300 outside
-                    timing0: 320x256 {
-                        hactive = <320>;
+                    timing0: 300x256 {
+                        hactive = <300>;
                         vactive = <256>;
-                        hback-porch = <88>;
-                        hfront-porch = <68>;
+                        hback-porch = <128>;
+                        hfront-porch = <48>;
                         hsync-len = <36>;
                         vback-porch = <35>;
                         vfront-porch = <19>;
