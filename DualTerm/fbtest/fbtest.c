@@ -86,8 +86,8 @@ int main(int argc, char* argv[]) {
         int w = var_info.xres;
         int h = var_info.yres;
         memset(buffer, 0x0, bufsz);
-        draw_blocks();
         draw_reticule();
+        draw_blocks();
         printf("Drawn.\n");
     }
     munmap(buffer, bufsz);
