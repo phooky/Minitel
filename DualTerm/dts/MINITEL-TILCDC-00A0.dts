@@ -96,8 +96,8 @@
                     timing0: 320x256 {
                         hactive = <320>;
                         vactive = <256>;
-                        hback-porch = <88>;
-                        hfront-porch = <68>;
+                        hback-porch = <98>;
+                        hfront-porch = <58>;
                         hsync-len = <36>;
                         vback-porch = <35>;
                         vfront-porch = <19>;
