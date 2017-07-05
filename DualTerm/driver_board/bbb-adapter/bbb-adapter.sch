@@ -117,21 +117,21 @@ F 3 "" H 3650 2300 50  0000 C CNN
 	1    3650 2300
 	1    0    0    -1  
 $EndComp
-Text GLabel 2850 1800 0    39   Input ~ 0
-BB_LCD0
-Text GLabel 2850 1900 0    39   Input ~ 0
-BB_LCD1
-Text GLabel 2850 2000 0    39   Input ~ 0
-BB_LCD2
 Text GLabel 2850 2100 0    39   Input ~ 0
+BB_LCD0
+Text GLabel 2850 2000 0    39   Input ~ 0
+BB_LCD1
+Text GLabel 2850 1900 0    39   Input ~ 0
+BB_LCD2
+Text GLabel 2850 1800 0    39   Input ~ 0
 BB_LCD3
-Text GLabel 2850 2200 0    39   Input ~ 0
-BB_LCD8
-Text GLabel 2850 2300 0    39   Input ~ 0
-BB_LCD9
-Text GLabel 2850 2400 0    39   Input ~ 0
-BB_LCD10
 Text GLabel 2850 2500 0    39   Input ~ 0
+BB_LCD8
+Text GLabel 2850 2400 0    39   Input ~ 0
+BB_LCD9
+Text GLabel 2850 2300 0    39   Input ~ 0
+BB_LCD10
+Text GLabel 2850 2200 0    39   Input ~ 0
 BB_LCD11
 $Comp
 L GND #PWR02
@@ -147,54 +147,54 @@ $EndComp
 $Comp
 L CONN_01X06 P3
 U 1 1 5956C702
-P 5550 2050
-F 0 "P3" H 5550 2400 50  0000 C CNN
-F 1 "CONN_01X06" V 5650 2050 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x06_Pitch2.54mm" H 5550 2050 50  0001 C CNN
-F 3 "" H 5550 2050 50  0000 C CNN
-	1    5550 2050
-	1    0    0    1   
+P 5550 1850
+F 0 "P3" H 5550 2200 50  0000 C CNN
+F 1 "CONN_01X06" V 5650 1850 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x06_Pitch2.54mm" H 5550 1850 50  0001 C CNN
+F 3 "" H 5550 1850 50  0000 C CNN
+	1    5550 1850
+	1    0    0    -1  
 $EndComp
 $Comp
 L CONN_01X06 P2
 U 1 1 5956C76B
-P 4750 2450
-F 0 "P2" H 4750 2800 50  0000 C CNN
-F 1 "CONN_01X06" V 4850 2450 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x06_Pitch2.54mm" H 4750 2450 50  0001 C CNN
-F 3 "" H 4750 2450 50  0000 C CNN
-	1    4750 2450
-	1    0    0    1   
+P 5550 2600
+F 0 "P2" H 5550 2950 50  0000 C CNN
+F 1 "CONN_01X06" V 5650 2600 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x06_Pitch2.54mm" H 5550 2600 50  0001 C CNN
+F 3 "" H 5550 2600 50  0000 C CNN
+	1    5550 2600
+	1    0    0    -1  
 $EndComp
 $Comp
 L GND #PWR03
 U 1 1 5956CB69
-P 5300 2350
-F 0 "#PWR03" H 5300 2100 50  0001 C CNN
-F 1 "GND" H 5300 2200 50  0000 C CNN
-F 2 "" H 5300 2350 50  0000 C CNN
-F 3 "" H 5300 2350 50  0000 C CNN
-	1    5300 2350
-	1    0    0    -1  
+P 5000 1600
+F 0 "#PWR03" H 5000 1350 50  0001 C CNN
+F 1 "GND" H 5000 1450 50  0000 C CNN
+F 2 "" H 5000 1600 50  0000 C CNN
+F 3 "" H 5000 1600 50  0000 C CNN
+	1    5000 1600
+	0    1    1    0   
 $EndComp
 $Comp
 L GND #PWR04
 U 1 1 5956CB89
-P 4500 2750
-F 0 "#PWR04" H 4500 2500 50  0001 C CNN
-F 1 "GND" H 4500 2600 50  0000 C CNN
-F 2 "" H 4500 2750 50  0000 C CNN
-F 3 "" H 4500 2750 50  0000 C CNN
-	1    4500 2750
-	1    0    0    -1  
+P 5250 2300
+F 0 "#PWR04" H 5250 2050 50  0001 C CNN
+F 1 "GND" H 5250 2150 50  0000 C CNN
+F 2 "" H 5250 2300 50  0000 C CNN
+F 3 "" H 5250 2300 50  0000 C CNN
+	1    5250 2300
+	-1   0    0    1   
 $EndComp
 Text GLabel 10050 1850 2    39   Input ~ 0
 CSYNC_A
 Text GLabel 10050 2400 2    39   Input ~ 0
 CSYNC_B
-Text GLabel 5100 2400 3    39   Input ~ 0
+Text GLabel 5250 1700 0    39   Input ~ 0
 CSYNC_A
-Text GLabel 4300 2800 3    39   Input ~ 0
+Text GLabel 5250 2450 0    39   Input ~ 0
 CSYNC_B
 $Comp
 L 74LS32 U2
@@ -517,14 +517,6 @@ Wire Wire Line
 Wire Wire Line
 	2950 2200 2850 2200
 Wire Wire Line
-	4350 2500 4550 2500
-Wire Wire Line
-	4550 2400 4350 2400
-Wire Wire Line
-	4350 2300 4550 2300
-Wire Wire Line
-	4550 2200 4350 2200
-Wire Wire Line
 	5350 2100 4350 2100
 Wire Wire Line
 	4350 2000 5350 2000
@@ -536,22 +528,6 @@ Wire Wire Line
 	9850 2400 10050 2400
 Wire Wire Line
 	9850 1850 10050 1850
-Wire Wire Line
-	4500 2750 4500 2700
-Wire Wire Line
-	4500 2700 4550 2700
-Wire Wire Line
-	5300 2350 5300 2300
-Wire Wire Line
-	5300 2300 5350 2300
-Wire Wire Line
-	4300 2800 4300 2600
-Wire Wire Line
-	4300 2600 4550 2600
-Wire Wire Line
-	5100 2400 5100 2200
-Wire Wire Line
-	5100 2200 5350 2200
 Wire Wire Line
 	8550 3250 8400 3250
 Wire Wire Line
@@ -587,7 +563,7 @@ Wire Wire Line
 Wire Wire Line
 	7100 3500 7300 3500
 Wire Wire Line
-	5250 5150 4750 5150
+	4750 5150 5250 5150
 Wire Wire Line
 	4850 5950 5250 5950
 Wire Wire Line
@@ -797,4 +773,38 @@ NoConn ~ 7100 3800
 NoConn ~ 7100 3900
 NoConn ~ 6600 3900
 NoConn ~ 6600 3800
+Wire Wire Line
+	5250 1700 5350 1700
+Wire Wire Line
+	5350 1600 5000 1600
+Wire Wire Line
+	5250 2300 5250 2350
+Wire Wire Line
+	5250 2350 5350 2350
+Wire Wire Line
+	5350 2450 5250 2450
+Wire Wire Line
+	4350 2500 4500 2500
+Wire Wire Line
+	4500 2500 4500 2850
+Wire Wire Line
+	4500 2850 5350 2850
+Wire Wire Line
+	4350 2400 4550 2400
+Wire Wire Line
+	4550 2400 4550 2750
+Wire Wire Line
+	4550 2750 5350 2750
+Wire Wire Line
+	4350 2300 4600 2300
+Wire Wire Line
+	4600 2300 4600 2650
+Wire Wire Line
+	4600 2650 5350 2650
+Wire Wire Line
+	4350 2200 4650 2200
+Wire Wire Line
+	4650 2200 4650 2550
+Wire Wire Line
+	4650 2550 5350 2550
 $EndSCHEMATC
