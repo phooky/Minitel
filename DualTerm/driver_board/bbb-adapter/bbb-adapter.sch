@@ -91,17 +91,6 @@ F 3 "" H 9250 1850 50  0000 C CNN
 	1    9250 1850
 	1    0    0    -1  
 $EndComp
-$Comp
-L 74LS32 U2
-U 2 1 5956C157
-P 9250 2400
-F 0 "U2" H 9250 2450 50  0000 C CNN
-F 1 "74LS32" H 9250 2350 50  0000 C CNN
-F 2 "Housings_DIP:DIP-14_W7.62mm_LongPads" H 9250 2400 50  0001 C CNN
-F 3 "" H 9250 2400 50  0000 C CNN
-	2    9250 2400
-	1    0    0    -1  
-$EndComp
 Text GLabel 8250 1950 0    39   Input ~ 0
 BB_VSYNC
 Text GLabel 8250 2300 0    39   Input ~ 0
@@ -188,9 +177,9 @@ F 3 "" H 5250 2300 50  0000 C CNN
 	1    5250 2300
 	-1   0    0    1   
 $EndComp
-Text GLabel 10050 1850 2    39   Input ~ 0
-CSYNC_A
 Text GLabel 10050 2400 2    39   Input ~ 0
+CSYNC_A
+Text GLabel 10050 1850 2    39   Input ~ 0
 CSYNC_B
 Text GLabel 5250 1700 0    39   Input ~ 0
 CSYNC_A
@@ -480,19 +469,12 @@ Wire Wire Line
 Wire Wire Line
 	6400 4000 6600 4000
 Wire Wire Line
-	8250 2300 8650 2300
-Wire Wire Line
 	8250 1950 8650 1950
 Wire Wire Line
 	8650 1750 8400 1750
 Wire Wire Line
-	8400 1750 8400 2300
+	8400 1750 8400 2500
 Connection ~ 8400 2300
-Wire Wire Line
-	8650 2500 8550 2500
-Wire Wire Line
-	8550 2500 8550 1950
-Connection ~ 8550 1950
 Wire Wire Line
 	2850 2700 2850 2900
 Wire Wire Line
@@ -807,4 +789,24 @@ Wire Wire Line
 	4650 2200 4650 2550
 Wire Wire Line
 	4650 2550 5350 2550
+$Comp
+L 74LS32 U2
+U 2 1 5956C157
+P 9250 2400
+F 0 "U2" H 9250 2450 50  0000 C CNN
+F 1 "74LS32" H 9250 2350 50  0000 C CNN
+F 2 "Housings_DIP:DIP-14_W7.62mm_LongPads" H 9250 2400 50  0001 C CNN
+F 3 "" H 9250 2400 50  0000 C CNN
+	2    9250 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8400 2300 8250 2300
+Wire Wire Line
+	8400 2500 8650 2500
+Wire Wire Line
+	8650 2300 8500 2300
+Wire Wire Line
+	8500 2300 8500 1950
+Connection ~ 8500 1950
 $EndSCHEMATC
